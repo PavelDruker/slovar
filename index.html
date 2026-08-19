@@ -1,0 +1,2445 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Словарь EN → RU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  [data-theme="dark"] {
+    --bg: #0a0c11; --surface: #12151d; --card: #141821; --card-hover: #1a1f2b;
+    --border: rgba(255,255,255,0.08); --border-hover: rgba(255,255,255,0.18);
+    --accent: #7c6cf6; --accent-dim: rgba(124,108,246,0.16); --accent2: #a599ff;
+    --text: #c6cad4; --text-en: #f3f4f8; --muted: #4a5163; --muted2: #8d94a6;
+    --sep: #3a4152; --controls-bg: rgba(10,12,17,0.88); --sec-header-bg: #0a0c11;
+    --shadow: rgba(0,0,0,0.55); --scrollbar: rgba(124,108,246,0.35);
+    --modal-bg: #14182233; --modal-bg-solid: #171b26; --input-bg: #0d0f15; --danger: #f2555f; --success: #34d399;
+  }
+  [data-theme="light"] {
+    --bg: #f6f6fb; --surface: #ffffff; --card: #ffffff; --card-hover: #f2f1fb;
+    --border: rgba(30,25,70,0.08); --border-hover: rgba(30,25,70,0.16);
+    --accent: #5b4fe0; --accent-dim: rgba(91,79,224,0.1); --accent2: #4338ca;
+    --text: #454a5e; --text-en: #191c2e; --muted: #9599ac; --muted2: #5c6178;
+    --sep: #d9dbe8; --controls-bg: rgba(246,246,251,0.88); --sec-header-bg: #f6f6fb;
+    --shadow: rgba(30,25,70,0.1); --scrollbar: rgba(91,79,224,0.3);
+    --modal-bg: #ffffff; --modal-bg-solid: #ffffff; --input-bg: #f6f6fb; --danger: #d5293a; --success: #0e9f6e;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  button, input, select, a { -webkit-tap-highlight-color: transparent; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'DM Sans', sans-serif; font-weight: 400;
+    line-height: 1.5; min-height: 100dvh;
+    transition: background 0.25s, color 0.25s;
+  }
+  [data-theme="dark"] body {
+    background-image: radial-gradient(ellipse 70% 45% at 50% 0%, rgba(124,108,246,0.14) 0%, transparent 65%);
+  }
+  [data-theme="light"] body {
+    background-image: radial-gradient(ellipse 70% 45% at 50% 0%, rgba(91,79,224,0.08) 0%, transparent 65%);
+  }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+  /* ── HEADER ── */
+  .page-header { text-align: center; padding: 40px 20px 20px; }
+  .eyebrow {
+    font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 8px; opacity: 0.9;
+  }
+  h1 {
+    font-family: 'Outfit', sans-serif; font-size: clamp(1.7rem, 5.5vw, 2.6rem);
+    font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; color: var(--text-en);
+  }
+  [data-theme="dark"] h1 {
+    background: linear-gradient(120deg, #f3f4f8 0%, #a599ff 55%, #7c6cf6 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  [data-theme="light"] h1 {
+    background: linear-gradient(120deg, #191c2e 0%, #5b4fe0 65%, #4338ca 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .subtitle-row {
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px; margin-top: 7px; flex-wrap: wrap;
+  }
+  .subtitle { font-size: 13px; color: var(--muted2); font-weight: 300; }
+  .total-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 10px; background: var(--accent-dim); border: 1px solid var(--border);
+    border-radius: 100px; font-size: 11px; color: var(--accent); font-weight: 600;
+  }
+  .theme-toggle {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 10px 5px 5px; min-height: 32px; background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 100px; font-size: 12px; color: var(--muted2);
+    font-family: 'DM Sans', sans-serif; font-weight: 500;
+    cursor: pointer; transition: border-color 0.2s, color 0.2s; user-select: none;
+    touch-action: manipulation;
+  }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--text); }
+  .toggle-track {
+    width: 30px; height: 17px; border-radius: 9px;
+    background: var(--accent-dim); border: 1.5px solid var(--border-hover);
+    position: relative; flex-shrink: 0;
+  }
+  .toggle-thumb {
+    width: 11px; height: 11px; border-radius: 50%; background: var(--accent);
+    position: absolute; top: 1px; left: 1px; transition: left 0.2s;
+  }
+  [data-theme="light"] .toggle-thumb { left: 14px; }
+
+  /* ── TOOLBAR BUTTONS (shared) ── */
+  .tbtn {
+    display: inline-flex; align-items: center; gap: 5px;
+    height: 32px; padding: 0 12px; border-radius: 9px; font-size: 12px;
+    font-family: 'DM Sans', sans-serif; font-weight: 500; white-space: nowrap;
+    cursor: pointer; user-select: none; border: 1.5px solid var(--border);
+    background: var(--surface); color: var(--muted2);
+    touch-action: manipulation;
+    transition: opacity 0.15s, transform 0.15s, border-color 0.15s, color 0.15s, background 0.15s;
+  }
+  .tbtn svg { width: 13px; height: 13px; flex-shrink: 0; }
+  .tbtn:hover { border-color: var(--border-hover); color: var(--text); }
+  .tbtn:active { transform: scale(0.97); }
+  .add-btn-word {
+    background: var(--accent); border-color: var(--accent); color: #fff;
+  }
+  .add-btn-word:hover { opacity: 0.9; color: #fff; border-color: var(--accent); }
+  .add-btn-section:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── CONTROLS ── */
+  .controls-wrap {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--controls-bg); backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border); padding: 12px 16px;
+    transition: background 0.25s, border-color 0.25s;
+  }
+  .controls { max-width: 1180px; margin: 0 auto; display: flex; flex-wrap: wrap; row-gap: 10px; gap: 10px; align-items: center; }
+  .search-wrap { position: relative; flex: 2 1 260px; }
+  .search-icon {
+    position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
+    width: 18px; height: 18px; color: var(--muted); pointer-events: none;
+  }
+  #searchInput {
+    width: 100%; padding: 14px 42px 14px 44px;
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 13px; color: var(--text);
+    font-family: 'DM Sans', sans-serif; font-size: 16px; outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.25s;
+  }
+  #searchInput:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+  #searchInput::placeholder { color: var(--muted); }
+  .reset-btn {
+    position: absolute; right: 13px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; color: var(--muted); cursor: pointer;
+    display: none; padding: 4px; font-size: 18px; line-height: 1; transition: color 0.15s;
+  }
+  .reset-btn:hover { color: var(--text); }
+  .reset-btn.visible { display: block; }
+  #sectionFilter {
+    padding: 14px 34px 14px 16px; background: var(--surface);
+    border: 1.5px solid var(--border); border-radius: 13px; color: var(--text);
+    font-family: 'DM Sans', sans-serif; font-size: 16px; outline: none;
+    cursor: pointer; flex: 1 1 200px; min-width: 190px;
+    transition: border-color 0.2s, background 0.25s;
+    appearance: none; -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 13px center;
+  }
+  #sectionFilter:focus { border-color: var(--accent); }
+  .controls-actions { display: flex; flex-wrap: wrap; gap: 8px; flex: 1 0 100%; justify-content: flex-end; }
+
+  /* ── AUTOCOMPLETE ── */
+  .autocomplete-dropdown {
+    position: absolute; top: calc(100% + 5px); left: 0; right: 0;
+    background: var(--card); border: 1px solid var(--border-hover);
+    border-radius: 12px; overflow: hidden; z-index: 200;
+    box-shadow: 0 16px 40px var(--shadow); display: none;
+  }
+  .autocomplete-dropdown.open { display: block; }
+  .ac-item {
+    padding: 10px 16px; cursor: pointer; display: flex; align-items: center;
+    justify-content: space-between; gap: 12px;
+    border-bottom: 1px solid var(--border); transition: background 0.12s;
+  }
+  .ac-item:last-child { border-bottom: none; }
+  .ac-item:hover, .ac-item.active { background: var(--accent-dim); }
+  .ac-en { font-weight: 500; font-size: 14px; color: var(--text-en); }
+  .ac-ru { font-size: 13px; color: var(--muted2); text-align: right; flex-shrink: 0; max-width: 45%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ac-highlight { color: var(--accent); font-weight: 600; }
+
+  /* ── CONTENT: MASONRY CARD GRID ── */
+  .content {
+    max-width: 1180px; margin: 0 auto;
+    padding: 22px 16px calc(80px + env(safe-area-inset-bottom, 0px));
+    columns: 2 420px; column-gap: 18px;
+  }
+  .section-block {
+    break-inside: avoid; display: inline-block; width: 100%;
+    margin-bottom: 18px; vertical-align: top;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; box-shadow: 0 2px 14px var(--shadow);
+    overflow: hidden; transition: border-color 0.2s;
+  }
+  .section-header {
+    display: flex; align-items: center; gap: 9px;
+    padding: 14px 16px; background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    cursor: pointer; user-select: none; touch-action: manipulation;
+  }
+  .section-block.collapsed .section-header { border-bottom-color: transparent; }
+  .section-chevron {
+    width: 15px; height: 15px; color: var(--muted); flex-shrink: 0;
+    transition: transform 0.22s ease;
+  }
+  .section-block.collapsed .section-chevron { transform: rotate(-90deg); }
+  .section-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 24px; height: 24px; padding: 0 6px;
+    background: var(--accent-dim); border: 1px solid var(--border-hover);
+    border-radius: 7px; font-family: 'Outfit', sans-serif;
+    font-size: 11px; font-weight: 700; color: var(--accent); flex-shrink: 0;
+  }
+  .section-title { font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.03em; color: var(--text-en); flex: 1; }
+  .section-count { font-size: 11px; color: var(--muted2); background: var(--bg); border: 1px solid var(--border); border-radius: 100px; padding: 3px 9px; white-space: nowrap; }
+  .section-custom-badge {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--success); background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.3);
+    border-radius: 100px; padding: 2px 8px;
+  }
+
+  /* ── WORD LIST ── */
+  .words-list-wrap { }
+  .words-list { display: flex; flex-direction: column; padding: 6px; }
+  .word-row {
+    display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 8px; row-gap: 2px;
+    padding: 10px 10px; border-radius: 10px; transition: background 0.15s; cursor: default;
+    position: relative; touch-action: manipulation; min-height: 44px;
+  }
+  .word-row:not(:last-child) { border-bottom: 1px solid var(--border); }
+  .word-row:hover { background: var(--card-hover); }
+  .word-en { font-family: 'Outfit', sans-serif; font-size: 14.5px; font-weight: 600; color: var(--text-en); }
+  .word-sep { font-size: 13px; color: var(--sep); flex-shrink: 0; user-select: none; }
+  .word-ru { font-size: 13.5px; color: var(--muted2); font-weight: 400; flex: 1 1 140px; }
+  .word-delete {
+    display: none; align-items: center; justify-content: center;
+    width: 30px; height: 30px; border-radius: 50%; border: none;
+    background: rgba(242,85,95,0.1); color: var(--danger);
+    cursor: pointer; font-size: 15px; line-height: 1;
+    transition: background 0.15s; flex-shrink: 0; margin-left: auto;
+    touch-action: manipulation;
+  }
+  body.edit-mode .word-delete { display: flex; }
+  .word-delete:hover { background: rgba(242,85,95,0.2); }
+
+  /* ── TRANSLATION BLUR ── */
+  .word-ru {
+    filter: blur(5px);
+    cursor: pointer;
+    transition: filter 0.2s;
+    user-select: none;
+    border-radius: 4px;
+    touch-action: manipulation;
+    border-bottom: 1.5px dashed var(--accent);
+    padding-bottom: 1px;
+  }
+  .word-ru.revealed {
+    filter: none;
+    cursor: default;
+    user-select: text;
+    border-bottom-color: transparent;
+    border-bottom-style: solid;
+  }
+  .word-ru:not(.revealed):hover { filter: blur(3px); }
+
+  /* ── EDIT MODE / TOGGLE STATES ── */
+  #revealAllBtn.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+  #editModeBtn.active {
+    background: rgba(242,85,95,0.1); border-color: rgba(242,85,95,0.4); color: var(--danger);
+  }
+
+  @keyframes flashRow {
+    0%   { background: rgba(251,191,36,0.2); }
+    60%  { background: rgba(251,191,36,0.07); }
+    100% { background: transparent; }
+  }
+  .word-row.highlighted { animation: flashRow 1.4s ease-out forwards; }
+  .word-row.highlighted .word-en { color: #f59e0b; }
+
+  .no-results { display: none; text-align: center; padding: 60px 20px; color: var(--muted); column-span: all; }
+  .no-results.visible { display: block; }
+  .no-results-icon { font-size: 36px; margin-bottom: 12px; }
+  .no-results h3 { font-family: 'Outfit', sans-serif; font-size: 17px; color: var(--muted2); margin-bottom: 6px; }
+  .no-results p { font-size: 14px; }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center; padding: 16px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--modal-bg-solid); border: 1px solid var(--border-hover);
+    border-radius: 18px; padding: 28px 28px 24px;
+    width: 100%; max-width: 420px;
+    box-shadow: 0 24px 60px var(--shadow);
+    animation: modalIn 0.2s ease-out;
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.95) translateY(8px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .modal-title {
+    font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 700;
+    color: var(--text-en); margin-bottom: 20px;
+  }
+  .form-group { margin-bottom: 14px; }
+  .form-label { display: block; font-size: 13px; font-weight: 500; color: var(--muted2); margin-bottom: 6px; }
+  .form-input, .form-select {
+    width: 100%; padding: 10px 14px;
+    background: var(--input-bg); border: 1.5px solid var(--border);
+    border-radius: 10px; color: var(--text);
+    font-family: 'DM Sans', sans-serif; font-size: 16px; outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .form-input:focus, .form-select:focus {
+    border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim);
+  }
+  .form-input::placeholder { color: var(--muted); }
+  .form-select {
+    appearance: none; -webkit-appearance: none; cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 12px center; padding-right: 34px;
+  }
+  .form-error { font-size: 12px; color: var(--danger); margin-top: 5px; display: none; }
+  .form-error.visible { display: block; }
+  .modal-actions { display: flex; gap: 10px; margin-top: 22px; }
+  .btn-primary {
+    flex: 1; padding: 11px 20px; background: var(--accent); border: none;
+    border-radius: 10px; color: #fff; font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 500; cursor: pointer; transition: opacity 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.88; }
+  .btn-secondary {
+    padding: 11px 20px; background: transparent; border: 1.5px solid var(--border);
+    border-radius: 10px; color: var(--muted2); font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 500; cursor: pointer; transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--border-hover); color: var(--text); }
+
+  /* ── GAME TOPICS ── */
+  .game-topics-bar { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .modal-wide { max-width: 480px; }
+  .topics-toolbar { display: flex; gap: 8px; margin-bottom: 10px; }
+  .topics-toolbar-btn {
+    padding: 5px 12px; border-radius: 8px; font-size: 12px;
+    font-family: 'DM Sans', sans-serif; font-weight: 500; cursor: pointer;
+    background: transparent; border: 1.5px solid var(--border); color: var(--muted2);
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .topics-toolbar-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .topics-list {
+    max-height: 340px; overflow-y: auto; display: flex; flex-direction: column; gap: 2px;
+    border: 1px solid var(--border); border-radius: 12px; padding: 6px;
+    background: var(--input-bg);
+  }
+  .topic-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 10px; border-radius: 8px; cursor: pointer;
+    font-size: 14px; color: var(--text); user-select: none;
+    transition: background 0.12s;
+  }
+  .topic-item:hover { background: var(--card-hover); }
+  .topic-item input[type="checkbox"] {
+    width: 17px; height: 17px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0;
+  }
+  .topic-item-name { flex: 1; }
+  .topic-item-count {
+    font-size: 11px; color: var(--muted); background: var(--surface);
+    border: 1px solid var(--border); border-radius: 100px; padding: 2px 8px; flex-shrink: 0;
+  }
+
+  /* ── GAME ROUND SIZE ── */
+  .count-mode-toggle { display: flex; gap: 8px; margin-bottom: 16px; }
+  .count-mode-btn {
+    flex: 1; padding: 10px 12px; border-radius: 10px; text-align: center;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer;
+    background: transparent; border: 1.5px solid var(--border); color: var(--muted2);
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+  .count-mode-btn:hover { border-color: var(--border-hover); color: var(--text); }
+  .count-mode-btn.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+  .count-hint { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--scrollbar); border-radius: 3px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    html { scroll-behavior: auto; }
+    .word-ru { transition: none; }
+    .modal { animation: none; }
+  }
+
+  @media (max-width: 600px) {
+    .page-header { padding: 28px 16px 18px; }
+    .content { columns: 1; }
+    #sectionFilter { width: 100%; min-width: unset; }
+    .word-en { font-size: 14px; }
+    .word-ru { font-size: 13px; }
+    .modal { padding: 22px 18px 18px; }
+  }
+
+  /* ── TABS ── */
+  .tab-bar {
+    display: flex; justify-content: center;
+    padding: 0 16px 18px;
+  }
+  .tab-bar-inner {
+    display: inline-flex; gap: 3px; padding: 4px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 13px; max-width: 100%;
+  }
+  .tab-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 8px 18px; border-radius: 9px; font-size: 13px;
+    font-family: 'DM Sans', sans-serif; font-weight: 500;
+    cursor: pointer; border: none;
+    background: transparent; color: var(--muted2);
+    transition: color 0.2s, background 0.2s;
+    touch-action: manipulation; white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.tab-active { background: var(--accent); color: #fff; }
+
+  /* ── GAME VIEW ── */
+  #gameView { max-width: 560px; margin: 0 auto; padding: 32px 16px calc(80px + env(safe-area-inset-bottom, 0px)); display: none; }
+  .game-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 12px;
+  }
+  .game-progress-text { font-size: 13px; color: var(--muted2); font-family: 'DM Sans', sans-serif; }
+  .game-score-display {
+    font-size: 14px; font-weight: 600; color: var(--accent);
+    font-family: 'DM Sans', sans-serif;
+  }
+  .game-progress-bar-wrap {
+    height: 5px; background: var(--border); border-radius: 3px; margin-bottom: 28px; overflow: hidden;
+  }
+  .game-progress-bar {
+    height: 100%; background: var(--accent); border-radius: 3px;
+    width: 0%; transition: width 0.35s ease;
+  }
+  .game-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 18px; padding: 36px 28px 28px;
+    box-shadow: 0 8px 32px var(--shadow);
+  }
+  .game-word-en {
+    font-family: 'Outfit', sans-serif; font-size: clamp(1.5rem, 6vw, 2.2rem);
+    font-weight: 700; color: var(--text-en); text-align: center;
+    margin-bottom: 30px; line-height: 1.25;
+  }
+  .game-input-wrap { display: flex; gap: 10px; }
+  .game-input {
+    flex: 1; padding: 12px 16px;
+    background: var(--input-bg); border: 1.5px solid var(--border);
+    border-radius: 12px; color: var(--text);
+    font-family: 'DM Sans', sans-serif; font-size: 16px; outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .game-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+  .game-input::placeholder { color: var(--muted); }
+  .game-input.correct-border { border-color: #10b981 !important; box-shadow: 0 0 0 3px rgba(16,185,129,0.15) !important; }
+  .game-input.wrong-border { border-color: var(--danger) !important; box-shadow: 0 0 0 3px rgba(239,68,68,0.15) !important; }
+  .game-input:disabled { opacity: 0.75; }
+  .game-submit-btn {
+    padding: 12px 20px; min-height: 44px; background: var(--accent); border: none;
+    border-radius: 12px; color: #fff; font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 500; cursor: pointer; white-space: nowrap;
+    transition: opacity 0.2s, transform 0.15s; touch-action: manipulation;
+  }
+  .game-submit-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+  .game-feedback {
+    margin-top: 16px; font-size: 14px; min-height: 22px;
+    font-weight: 500; line-height: 1.4; word-break: break-word;
+  }
+  .game-feedback.correct { color: #10b981; }
+  .game-feedback.wrong { color: var(--danger); }
+
+  /* ── ROUND RESULTS ── */
+  .game-results { padding: 4px 0 0; display: none; }
+  .results-stats { display: flex; gap: 12px; margin-bottom: 16px; }
+  .results-stat {
+    flex: 1; padding: 16px 12px; border-radius: 14px; text-align: center;
+  }
+  .results-stat-correct { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); }
+  .results-stat-wrong { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); }
+  .results-stat-num {
+    display: block; font-family: 'Outfit', sans-serif;
+    font-size: clamp(2rem, 10vw, 3rem); font-weight: 800; line-height: 1; margin-bottom: 5px;
+  }
+  .results-stat-correct .results-stat-num { color: #10b981; }
+  .results-stat-wrong .results-stat-num { color: var(--danger); }
+  .results-stat-label { font-size: 12px; color: var(--muted2); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+  .results-message { font-size: 14px; color: var(--muted2); text-align: center; margin-bottom: 18px; }
+  .btn-new-round {
+    display: block; width: 100%; padding: 14px 20px; min-height: 44px;
+    background: var(--accent); border: none; border-radius: 12px;
+    color: #fff; font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 500; cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s; touch-action: manipulation;
+  }
+  .btn-new-round:hover { opacity: 0.88; transform: translateY(-1px); }
+  .results-word-lists { margin-top: 24px; display: flex; flex-direction: column; gap: 20px; }
+  .results-section-title {
+    font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; padding: 0 4px;
+  }
+  .results-section-title-wrong { color: var(--danger); }
+  .results-section-title-correct { color: #10b981; }
+  .results-word-item { padding: 10px 14px; border-radius: 8px; margin-bottom: 3px; }
+  .results-word-item.item-correct { background: rgba(16,185,129,0.07); }
+  .results-word-item.item-wrong { background: rgba(239,68,68,0.07); }
+  .results-item-row { display: flex; align-items: baseline; }
+  .results-item-en { font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 600; color: var(--text-en); flex-shrink: 0; }
+  .results-item-sep { font-size: 13px; color: var(--sep); margin: 0 7px; flex-shrink: 0; }
+  .results-item-ru { font-size: 13px; color: var(--muted2); }
+  .results-item-user { font-size: 12px; color: var(--danger); margin-top: 3px; opacity: 0.85; }
+  .results-item-user s { text-decoration: line-through; }
+
+  /* ── RULES VIEW ── */
+  #rulesView { max-width: 760px; margin: 0 auto; padding: 24px 16px calc(80px + env(safe-area-inset-bottom, 0px)); display: none; }
+  .rule-card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 24px 24px 20px; box-shadow: 0 4px 20px var(--shadow); margin-bottom: 24px; }
+  .rule-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px; }
+  .rule-num { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; height: 32px; padding: 0 8px; background: var(--accent-dim); border: 1px solid var(--border-hover); border-radius: 8px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 700; color: var(--accent); flex-shrink: 0; margin-top: 2px; }
+  .rule-title { font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: var(--text-en); letter-spacing: 0.03em; }
+  .rule-subtitle { font-size: 13px; color: var(--muted2); margin-top: 3px; font-weight: 300; }
+  .rule-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 14px; }
+  .rule-table th { font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); background: var(--surface); }
+  .rule-table th:first-child { border-radius: 8px 0 0 0; }
+  .rule-table th:last-child { border-radius: 0 8px 0 0; }
+  .rule-table td { padding: 11px 12px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; line-height: 1.8; }
+  .rule-table tr:last-child td { border-bottom: none; }
+  .rule-table tbody tr:hover td { background: var(--accent-dim); transition: background 0.15s; }
+  .rule-em { color: var(--accent2); font-weight: 700; }
+  .rule-strong { color: var(--text-en); font-weight: 700; }
+  .rule-note { background: rgba(251,191,36,0.07); border: 1px solid rgba(251,191,36,0.25); border-radius: 10px; padding: 13px 16px; font-size: 13px; color: var(--muted2); line-height: 1.7; }
+  .rule-wrong { color: var(--danger); font-weight: 600; }
+  .rule-correct { color: #10b981; font-weight: 600; }
+  .rule-schema { display: flex; align-items: center; gap: 8px; row-gap: 12px; flex-wrap: wrap; font-family: 'Outfit', sans-serif; font-size: 14px; margin-bottom: 16px; padding: 14px 16px; background: var(--surface); border-radius: 10px; border: 1px solid var(--border); }
+  .schema-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .schema-sub { padding: 5px 12px; border-radius: 6px; font-weight: 700; background: var(--accent-dim); color: var(--accent); border: 1px solid var(--border-hover); }
+  .schema-verb { padding: 5px 12px; border-radius: 6px; font-weight: 700; background: rgba(16,185,129,0.1); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+  .schema-plus { color: var(--muted); font-weight: 700; font-size: 16px; }
+  .schema-divider { width: 1px; height: 24px; background: var(--border); margin: 0 8px; }
+  .rule-columns { display: flex; gap: 14px; margin-bottom: 16px; flex-wrap: wrap; }
+  .rule-col { flex: 1; min-width: 180px; background: var(--surface); border-radius: 10px; padding: 14px 16px; border: 1px solid var(--border); }
+  .rule-col-title { font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .rule-ex { display: flex; align-items: baseline; gap: 6px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .rule-ex:last-child { border-bottom: none; }
+  .ex-sub { font-family: 'Outfit', sans-serif; font-weight: 700; color: var(--accent); min-width: 38px; }
+  .ex-v { color: #10b981; font-weight: 600; min-width: 36px; }
+  .ex-obj { color: var(--muted2); }
+</style>
+</head>
+<body>
+
+<!-- Диагностика: видна если JS отключён или упал -->
+<noscript><div style="background:#dc2626;color:#fff;padding:16px;text-align:center;font-size:15px;font-weight:600;font-family:sans-serif;">JavaScript отключён. Включите: Настройки → Safari → Дополнения → JavaScript → ВКЛ</div></noscript>
+<div id="js-err" style="display:none;position:sticky;top:0;z-index:9999;background:#dc2626;color:#fff;padding:14px 16px;text-align:center;font-size:14px;font-family:sans-serif;word-break:break-word;"></div>
+
+<header class="page-header">
+  <div class="eyebrow">Учебный проект</div>
+  <h1>Словарь EN → RU</h1>
+  <div class="subtitle-row">
+    <span class="subtitle">английский — русский</span>
+    <span class="total-badge">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      <span id="totalCount">…</span> слов
+    </span>
+  </div>
+</header>
+
+<nav class="tab-bar">
+  <div class="tab-bar-inner">
+    <button class="tab-btn tab-active" id="tabDict">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      Словарь
+    </button>
+    <button class="tab-btn" id="tabGame">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      Игра
+    </button>
+    <button class="tab-btn" id="tabRules">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      Правила
+    </button>
+  </div>
+</nav>
+
+<div class="controls-wrap">
+  <div class="controls">
+    <div class="search-wrap">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="Поиск (EN или RU)…" autocomplete="off" autocorrect="off" spellcheck="false">
+      <button class="reset-btn" id="resetBtn" title="Сбросить">×</button>
+      <div class="autocomplete-dropdown" id="acDropdown"></div>
+    </div>
+    <select id="sectionFilter">
+      <option value="">Все разделы</option>
+    </select>
+    <div class="controls-actions">
+      <button class="tbtn add-btn-word" id="openAddWord">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        Добавить слово
+      </button>
+      <button class="tbtn add-btn-section" id="openAddSection">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        Новый раздел
+      </button>
+      <button class="theme-toggle" id="themeToggle">
+        <div class="toggle-track"><div class="toggle-thumb"></div></div>
+        <span id="themeLabel">Светлая</span>
+      </button>
+      <button class="tbtn" id="revealAllBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        <span id="revealAllLabel">Показать все слова</span>
+      </button>
+      <button class="tbtn" id="editModeBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Редактировать
+      </button>
+    </div>
+  </div>
+</div>
+
+<main class="content" id="mainContent">
+  <div class="no-results" id="noResults">
+    <div class="no-results-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+    <h3>Ничего не найдено</h3>
+    <p>Попробуйте другой запрос или сбросьте фильтры</p>
+  </div>
+</main>
+
+<!-- Game View -->
+<div id="gameView">
+  <div class="game-topics-bar">
+    <button class="tbtn" id="openGameTopics">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      <span id="gameTopicsLabel">Все темы</span>
+    </button>
+    <button class="tbtn" id="openGameCount">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="10" y1="9" x2="21" y2="9"/><line x1="10" y1="15" x2="21" y2="15"/><line x1="4" y1="9" x2="4.01" y2="9"/><line x1="4" y1="15" x2="4.01" y2="15"/></svg>
+      <span id="gameCountLabel">20 слов</span>
+    </button>
+  </div>
+  <div class="game-header">
+    <div class="game-progress-text">Слово <span id="gameWordNum">1</span> из <span id="gameWordTotal">20</span></div>
+    <div class="game-score-display">Очки: <span id="gameScoreNum">0</span></div>
+  </div>
+  <div class="game-progress-bar-wrap">
+    <div class="game-progress-bar" id="gameProgressBar"></div>
+  </div>
+  <div class="game-card" id="gameCard">
+    <div class="game-word-en" id="gameWordEn">—</div>
+    <div class="game-input-wrap">
+      <input type="text" id="gameInput" class="game-input" placeholder="Введите перевод на русском…" autocomplete="off" autocorrect="off" spellcheck="false">
+      <button class="game-submit-btn" id="gameSubmit">Проверить</button>
+    </div>
+    <div class="game-feedback" id="gameFeedback"></div>
+  </div>
+  <div class="game-results" id="gameResults">
+    <div class="results-stats">
+      <div class="results-stat results-stat-correct">
+        <span class="results-stat-num" id="resultsCorrectNum">0</span>
+        <span class="results-stat-label">правильно</span>
+      </div>
+      <div class="results-stat results-stat-wrong">
+        <span class="results-stat-num" id="resultsWrongNum">0</span>
+        <span class="results-stat-label">ошибок</span>
+      </div>
+    </div>
+    <div class="results-message" id="resultsMessage"></div>
+    <button class="btn-new-round" id="btnNewRound">Новый раунд</button>
+    <div class="results-word-lists">
+      <div class="results-section" id="resultsWrongSection">
+        <div class="results-section-title results-section-title-wrong" id="resultsWrongTitle">Ошибки</div>
+        <div id="resultsWrongWords"></div>
+      </div>
+      <div class="results-section" id="resultsCorrectSection">
+        <div class="results-section-title results-section-title-correct" id="resultsCorrectTitle">Правильно</div>
+        <div id="resultsCorrectWords"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Rules View -->
+<div id="rulesView">
+
+  <!-- Правило 1: BE (1) -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <span class="rule-num">1</span>
+      <div>
+        <div class="rule-title">BE (1): POSITIVE AND WH- QUESTIONS</div>
+        <div class="rule-subtitle">Местоимения, глагол BE и притяжательные прилагательные</div>
+      </div>
+    </div>
+    <table class="rule-table">
+      <thead>
+        <tr><th>Pronoun</th><th>BE</th><th>Сокращение</th><th>Possessive adjective</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>I</td><td>am</td><td><span class="rule-strong">I'm</span></td><td>my</td></tr>
+        <tr><td>you</td><td>are</td><td><span class="rule-strong">you're</span></td><td>your</td></tr>
+        <tr><td>he</td><td>is</td><td><span class="rule-strong">he's</span></td><td>his</td></tr>
+        <tr><td>she</td><td>is</td><td><span class="rule-strong">she's</span></td><td>her</td></tr>
+        <tr><td>it</td><td>is</td><td><span class="rule-strong">it's</span></td><td>its</td></tr>
+        <tr><td>we</td><td>are</td><td><span class="rule-strong">we're</span></td><td>our</td></tr>
+        <tr><td>they</td><td>are</td><td><span class="rule-strong">they're</span></td><td>their</td></tr>
+      </tbody>
+    </table>
+    <div class="rule-schema">
+      <span class="schema-sub">What / Where / How old</span>
+      <span class="schema-plus">+</span>
+      <span class="schema-verb">am / is / are</span>
+      <span class="schema-plus">+</span>
+      <span class="schema-sub">подлежащее…?</span>
+    </div>
+    <div class="rule-note">
+      <span class="rule-correct">What's</span> your name? &nbsp; <span class="rule-correct">Where are</span> you from? &nbsp; <span class="rule-correct">How old is</span> she?<br>
+      Possessive adjective стоит <strong>перед существительным</strong>: <strong>my</strong> name, <strong>her</strong> car, <strong>their</strong> house.
+    </div>
+  </div>
+
+  <!-- Правило 2: Краткие ответы Yes/No -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <span class="rule-num">2</span>
+      <div>
+        <div class="rule-title">SHORT ANSWERS TO YES/NO QUESTIONS</div>
+        <div class="rule-subtitle">Краткие ответы на вопросы Yes / No</div>
+      </div>
+    </div>
+    <table class="rule-table">
+      <thead>
+        <tr><th>Вопрос</th><th>Краткий ответ</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="rule-em">Is Anna</span> a student?</td>
+          <td>
+            Yes, <span class="rule-strong">she is.</span><br>
+            No, <span class="rule-strong">she's not.</span><br>
+            No, <span class="rule-strong">she isn't.</span>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="rule-em">Are they</span> at home?</td>
+          <td>
+            Yes, <span class="rule-strong">they are.</span><br>
+            No, <span class="rule-strong">they aren't.</span>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="rule-em">Are you</span> ready?</td>
+          <td>
+            Yes, <span class="rule-strong">I am.</span><br>
+            No, <span class="rule-strong">I'm not.</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="rule-note">
+      ⚠️ В кратких ответах, начинающихся с <strong>Yes</strong>, сокращения <strong>не используются</strong>.<br>
+      <span class="rule-wrong">НЕВЕРНО:</span> Yes, she's. &nbsp;/&nbsp; Yes, they're. &nbsp;/&nbsp; Yes, I'm.<br>
+      <span style="font-size:12px;opacity:0.75;margin-top:4px;display:block;">* Am и not не сокращаются вместе — формы «amn't» не существует.</span>
+    </div>
+  </div>
+
+  <!-- Правило 3: This / That / These / Those -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <span class="rule-num">3</span>
+      <div>
+        <div class="rule-title">THIS / THAT / THESE / THOSE</div>
+        <div class="rule-subtitle">Указательные местоимения: рядом или далеко</div>
+      </div>
+    </div>
+    <table class="rule-table">
+      <thead>
+        <tr><th></th><th>Рядом (near)</th><th>Далеко (far)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Singular</td><td><span class="rule-em">this</span> is my bag</td><td><span class="rule-em">that</span>'s your book</td></tr>
+        <tr><td>Plural</td><td><span class="rule-em">these</span> are my keys</td><td><span class="rule-em">those</span> are your shoes</td></tr>
+      </tbody>
+    </table>
+    <div class="rule-schema">
+      <span class="schema-sub">this / that</span>
+      <span class="schema-plus">+</span>
+      <span class="schema-verb">is (ед.ч.)</span>
+      <span class="schema-divider"></span>
+      <span class="schema-sub">these / those</span>
+      <span class="schema-plus">+</span>
+      <span class="schema-verb">are (мн.ч.)</span>
+    </div>
+    <div class="rule-note">
+      <strong>This/these</strong> — предмет рядом с говорящим. <strong>That/those</strong> — предмет далеко.<br>
+      Сокращение: that is = <span class="rule-correct">that's</span>. У this/these/those сокращений с is/are нет.
+    </div>
+  </div>
+
+  <!-- Правило 4: Have got -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <span class="rule-num">4</span>
+      <div>
+        <div class="rule-title">HAVE GOT</div>
+        <div class="rule-subtitle">Британский вариант — обладание чем-либо</div>
+      </div>
+    </div>
+    <div class="rule-schema">
+      <div class="schema-group">
+        <span class="schema-sub">I/you/we/they</span>
+        <span class="schema-plus">+</span>
+        <span class="schema-verb">have got ('ve got)</span>
+      </div>
+      <div class="schema-group">
+        <span class="schema-sub">he/she/it</span>
+        <span class="schema-plus">+</span>
+        <span class="schema-verb">has got ('s got)</span>
+      </div>
+    </div>
+    <table class="rule-table">
+      <thead>
+        <tr><th></th><th>Вопрос</th><th>Краткий ответ</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>I/you/we/they</td><td><span class="rule-em">Have</span> you <span class="rule-strong">got</span> a car?</td><td>Yes, I have. / No, I haven't.</td></tr>
+        <tr><td>he/she/it</td><td><span class="rule-em">Has</span> she <span class="rule-strong">got</span> a car?</td><td>Yes, she has. / No, she hasn't.</td></tr>
+      </tbody>
+    </table>
+    <div class="rule-note">
+      <span class="rule-correct">Have got</span> означает то же самое, что и просто <strong>have</strong> (см. следующее правило), но чаще используется в разговорном британском английском.<br>
+      Отрицание: <strong>haven't got / hasn't got</strong>. В кратких ответах <strong>got</strong> не повторяется: Yes, I have. (а не <s>Yes, I've got</s>).
+    </div>
+  </div>
+
+  <!-- Правило 5: Have / Has -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <span class="rule-num">5</span>
+      <div>
+        <div class="rule-title">USING HAVE AND HAS</div>
+        <div class="rule-subtitle">Общая форма (без got) — второй вариант к предыдущему правилу</div>
+      </div>
+    </div>
+    <div class="rule-schema">
+      <span class="schema-sub">I / you / we / they</span>
+      <span class="schema-plus">+</span>
+      <span class="schema-verb">have</span>
+      <span class="schema-divider"></span>
+      <span class="schema-sub">she / he / it</span>
+      <span class="schema-plus">+</span>
+      <span class="schema-verb">has</span>
+    </div>
+    <div class="rule-columns">
+      <div class="rule-col">
+        <div class="rule-col-title">+ have (ед. и мн. число)</div>
+        <div class="rule-ex"><span class="ex-sub">I</span><span class="ex-v">have</span><span class="ex-obj">a pen.</span></div>
+        <div class="rule-ex"><span class="ex-sub">You</span><span class="ex-v">have</span><span class="ex-obj">a pen.</span></div>
+        <div class="rule-ex"><span class="ex-sub">We</span><span class="ex-v">have</span><span class="ex-obj">pens.</span></div>
+        <div class="rule-ex"><span class="ex-sub">They</span><span class="ex-v">have</span><span class="ex-obj">pens.</span></div>
+      </div>
+      <div class="rule-col">
+        <div class="rule-col-title">+ has (3-е лицо ед. число)</div>
+        <div class="rule-ex"><span class="ex-sub">She</span><span class="ex-v">has</span><span class="ex-obj">a pen.</span></div>
+        <div class="rule-ex"><span class="ex-sub">He</span><span class="ex-v">has</span><span class="ex-obj">a pen.</span></div>
+        <div class="rule-ex"><span class="ex-sub">It</span><span class="ex-v">has</span><span class="ex-obj">blue ink.</span></div>
+      </div>
+    </div>
+    <div class="rule-note">
+      Смысл такой же, как у <span class="rule-correct">have got</span> из предыдущего правила — оба варианта верны. Have (без got) чаще используется в американском английском.
+    </div>
+  </div>
+
+  <!-- Правило 6: Possessive 's -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <span class="rule-num">6</span>
+      <div>
+        <div class="rule-title">POSSESSIVE 'S</div>
+        <div class="rule-subtitle">Притяжательный падеж существительных</div>
+      </div>
+    </div>
+    <div class="rule-schema">
+      <span class="schema-sub">сущ. в ед.ч.</span>
+      <span class="schema-plus">+</span>
+      <span class="schema-verb">'s</span>
+      <span class="schema-divider"></span>
+      <span class="schema-sub">сущ. во мн.ч. на -s</span>
+      <span class="schema-plus">+</span>
+      <span class="schema-verb">'</span>
+    </div>
+    <table class="rule-table">
+      <thead>
+        <tr><th>Пример</th><th>Перевод</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="rule-em">Tom's</span> car</td><td>машина Тома</td></tr>
+        <tr><td>My <span class="rule-em">sister's</span> book</td><td>книга моей сестры</td></tr>
+        <tr><td>The <span class="rule-em">students'</span> books</td><td>книги студентов</td></tr>
+      </tbody>
+    </table>
+    <div class="rule-note">
+      Вопрос: <span class="rule-correct">Whose is it?</span> / <span class="rule-correct">Whose car is that?</span> — Чьё это?<br>
+      Если существительное уже стоит во множественном числе на -s, апостроф ставится <strong>после</strong> s: the girl<strong>s'</strong> room.
+    </div>
+  </div>
+
+  <!-- Правило 7: Do / Does -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <span class="rule-num">7</span>
+      <div>
+        <div class="rule-title">USING DO AND DOES</div>
+        <div class="rule-subtitle">Вопросы и отрицания в простом настоящем времени</div>
+      </div>
+    </div>
+    <div class="rule-schema">
+      <span class="schema-sub">I / you / we / they</span>
+      <span class="schema-plus">+</span>
+      <span class="schema-verb">do / don't</span>
+      <span class="schema-divider"></span>
+      <span class="schema-sub">she / he / it</span>
+      <span class="schema-plus">+</span>
+      <span class="schema-verb">does / doesn't</span>
+    </div>
+    <table class="rule-table">
+      <thead>
+        <tr><th>Вопрос</th><th>Краткий ответ</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="rule-em">Do</span> <span class="rule-strong">you</span> work here?</td>
+          <td>Yes, <span class="rule-strong">I do.</span> &nbsp;/&nbsp; No, <span class="rule-strong">I don't.</span></td>
+        </tr>
+        <tr>
+          <td><span class="rule-em">Do</span> <span class="rule-strong">they</span> like coffee?</td>
+          <td>Yes, <span class="rule-strong">they do.</span> &nbsp;/&nbsp; No, <span class="rule-strong">they don't.</span></td>
+        </tr>
+        <tr>
+          <td><span class="rule-em">Does</span> <span class="rule-strong">she</span> work here?</td>
+          <td>Yes, <span class="rule-strong">she does.</span> &nbsp;/&nbsp; No, <span class="rule-strong">she doesn't.</span></td>
+        </tr>
+        <tr>
+          <td><span class="rule-em">Does</span> <span class="rule-strong">he</span> like coffee?</td>
+          <td>Yes, <span class="rule-strong">he does.</span> &nbsp;/&nbsp; No, <span class="rule-strong">he doesn't.</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="rule-columns">
+      <div class="rule-col">
+        <div class="rule-col-title">Утверждение</div>
+        <div class="rule-ex"><span class="ex-sub">I</span><span class="ex-obj">work here.</span></div>
+        <div class="rule-ex"><span class="ex-sub">You</span><span class="ex-obj">work here.</span></div>
+        <div class="rule-ex"><span class="ex-sub">She</span><span class="ex-obj">work<strong style="color:var(--accent)">s</strong> here.</span></div>
+        <div class="rule-ex"><span class="ex-sub">He</span><span class="ex-obj">work<strong style="color:var(--accent)">s</strong> here.</span></div>
+      </div>
+      <div class="rule-col">
+        <div class="rule-col-title">Отрицание (Negative)</div>
+        <div class="rule-ex"><span class="ex-sub">I</span><span class="ex-v">don't</span><span class="ex-obj">work here.</span></div>
+        <div class="rule-ex"><span class="ex-sub">You</span><span class="ex-v">don't</span><span class="ex-obj">work here.</span></div>
+        <div class="rule-ex"><span class="ex-sub">She</span><span class="ex-v">doesn't</span><span class="ex-obj">work here.</span></div>
+        <div class="rule-ex"><span class="ex-sub">He</span><span class="ex-v">doesn't</span><span class="ex-obj">work here.</span></div>
+      </div>
+    </div>
+    <div class="rule-note">
+      ⚠️ После <strong>does / doesn't</strong> глагол всегда стоит в <strong>базовой форме</strong> — без окончания <strong>-s</strong>.<br>
+      <span class="rule-correct">ВЕРНО:</span> She doesn't <strong>work</strong>. &nbsp; Does he <strong>like</strong> it?<br>
+      <span class="rule-wrong">НЕВЕРНО:</span> She doesn't <s>works</s>. &nbsp; Does he <s>likes</s> it?<br>
+      <span style="font-size:12px;opacity:0.75;margin-top:4px;display:block;">* don't = do not &nbsp;/&nbsp; doesn't = does not</span>
+    </div>
+  </div>
+
+  <!-- Правило 8: Subject and Object Pronouns -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <span class="rule-num">8</span>
+      <div>
+        <div class="rule-title">SUBJECT AND OBJECT PRONOUNS</div>
+        <div class="rule-subtitle">Местоимения в роли подлежащего и дополнения</div>
+      </div>
+    </div>
+    <table class="rule-table">
+      <thead>
+        <tr><th>Subject</th><th>Object</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>I</td><td>me</td></tr>
+        <tr><td>you</td><td>you</td></tr>
+        <tr><td>he</td><td>him</td></tr>
+        <tr><td>she</td><td>her</td></tr>
+        <tr><td>it</td><td>it</td></tr>
+        <tr><td>we</td><td>us</td></tr>
+        <tr><td>they</td><td>them</td></tr>
+      </tbody>
+    </table>
+    <div class="rule-columns">
+      <div class="rule-col">
+        <div class="rule-col-title">Subject — перед глаголом</div>
+        <div class="rule-ex"><span class="ex-sub">She</span><span class="ex-obj">loves him.</span></div>
+        <div class="rule-ex"><span class="ex-sub">They</span><span class="ex-obj">know us.</span></div>
+      </div>
+      <div class="rule-col">
+        <div class="rule-col-title">Object — после глагола/предлога</div>
+        <div class="rule-ex"><span class="ex-sub">Give it to</span><span class="ex-obj">me.</span></div>
+        <div class="rule-ex"><span class="ex-sub">I like</span><span class="ex-obj">her.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Правило 9: Ordinal Numbers -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <span class="rule-num">9</span>
+      <div>
+        <div class="rule-title">ORDINAL NUMBERS</div>
+        <div class="rule-subtitle">Порядковые числительные и даты (1st, 2nd, 3rd…)</div>
+      </div>
+    </div>
+    <div class="rule-schema">
+      <span class="schema-sub">ten</span>
+      <span class="schema-plus">+</span>
+      <span class="schema-verb">th</span>
+      <span class="schema-plus">=</span>
+      <span class="schema-verb">tenth</span>
+    </div>
+    <table class="rule-table">
+      <thead>
+        <tr><th>Число</th><th>Слово</th><th>Число</th><th>Слово</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="rule-em">1st</span></td><td>fir<strong>st</strong></td>
+          <td><span class="rule-em">13th</span></td><td>thirteen<strong>th</strong></td>
+        </tr>
+        <tr>
+          <td><span class="rule-em">2nd</span></td><td>seco<strong>nd</strong></td>
+          <td><span class="rule-em">20th</span></td><td>twent<strong>ieth</strong></td>
+        </tr>
+        <tr>
+          <td><span class="rule-em">3rd</span></td><td>thi<strong>rd</strong></td>
+          <td><span class="rule-em">21st</span></td><td>twenty-fir<strong>st</strong></td>
+        </tr>
+        <tr>
+          <td><span class="rule-em">4th</span></td><td>four<strong>th</strong></td>
+          <td><span class="rule-em">22nd</span></td><td>twenty-seco<strong>nd</strong></td>
+        </tr>
+        <tr>
+          <td><span class="rule-em">5th</span></td><td>fif<strong>th</strong></td>
+          <td><span class="rule-em">30th</span></td><td>thirt<strong>ieth</strong></td>
+        </tr>
+        <tr>
+          <td><span class="rule-em">12th</span></td><td>twelf<strong>th</strong></td>
+          <td><span class="rule-em">31st</span></td><td>thirty-fir<strong>st</strong></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="rule-columns">
+      <div class="rule-col">
+        <div class="rule-col-title">Общее правило</div>
+        <div class="rule-ex"><span class="ex-sub">four</span><span class="ex-v">+ th</span><span class="ex-obj">= fourth</span></div>
+        <div class="rule-ex"><span class="ex-sub">six</span><span class="ex-v">+ th</span><span class="ex-obj">= sixth</span></div>
+        <div class="rule-ex"><span class="ex-sub">ten</span><span class="ex-v">+ th</span><span class="ex-obj">= tenth</span></div>
+      </div>
+      <div class="rule-col">
+        <div class="rule-col-title">Исключения (1, 2, 3)</div>
+        <div class="rule-ex"><span class="ex-sub">one</span><span class="ex-v">→</span><span class="ex-obj">first</span></div>
+        <div class="rule-ex"><span class="ex-sub">two</span><span class="ex-v">→</span><span class="ex-obj">second</span></div>
+        <div class="rule-ex"><span class="ex-sub">three</span><span class="ex-v">→</span><span class="ex-obj">third</span></div>
+      </div>
+      <div class="rule-col">
+        <div class="rule-col-title">Меняется написание</div>
+        <div class="rule-ex"><span class="ex-sub">five</span><span class="ex-v">→</span><span class="ex-obj">fifth</span></div>
+        <div class="rule-ex"><span class="ex-sub">eight</span><span class="ex-v">→</span><span class="ex-obj">eighth</span></div>
+        <div class="rule-ex"><span class="ex-sub">nine</span><span class="ex-v">→</span><span class="ex-obj">ninth</span></div>
+        <div class="rule-ex"><span class="ex-sub">twelve</span><span class="ex-v">→</span><span class="ex-obj">twelfth</span></div>
+        <div class="rule-ex"><span class="ex-sub">twenty</span><span class="ex-v">→</span><span class="ex-obj">twentieth</span></div>
+      </div>
+    </div>
+    <div class="rule-note">
+      В составных числительных (21, 22, 31…) окончание меняется только у <strong>последнего слова</strong>: <span class="rule-correct">twenty-first</span>, <span class="rule-correct">twenty-second</span>, <span class="rule-correct">thirty-first</span>.<br>
+      Числа, оканчивающиеся на <strong>-y</strong> (twenty, thirty…), меняют <strong>y → ieth</strong>: twent<span class="rule-wrong">y</span> → twent<span class="rule-correct">ieth</span>.
+    </div>
+  </div>
+
+  <!-- Правило 10: Frequency Expressions -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <span class="rule-num">10</span>
+      <div>
+        <div class="rule-title">OTHER FREQUENCY EXPRESSIONS</div>
+        <div class="rule-subtitle">Выражения частотности: a day / a week / a month / a year</div>
+      </div>
+    </div>
+    <table class="rule-table">
+      <thead>
+        <tr><th>Пример</th><th>Перевод</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>I drink tea <span class="rule-em">once a day</span>.</td>
+          <td>Я пью чай <strong>один раз в день</strong>.</td>
+        </tr>
+        <tr>
+          <td>I drink tea <span class="rule-em">twice a day</span>.</td>
+          <td>Я пью чай <strong>дважды в день</strong>.</td>
+        </tr>
+        <tr>
+          <td>I see my grandparents <span class="rule-em">three times a week</span>.</td>
+          <td>Я вижу бабушку с дедушкой <strong>три раза в неделю</strong>.</td>
+        </tr>
+        <tr>
+          <td>I see my aunt <span class="rule-em">once a month</span>.</td>
+          <td>Я вижу тётю <strong>раз в месяц</strong>.</td>
+        </tr>
+        <tr>
+          <td>I see my cousin Sam <span class="rule-em">twice a year</span>.</td>
+          <td>Я вижу кузена Сэма <strong>дважды в год</strong>.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="rule-schema">
+      <span class="schema-sub">once / twice / three times…</span>
+      <span class="schema-plus">+</span>
+      <span class="schema-verb">a day / a week / a month / a year</span>
+    </div>
+    <div class="rule-columns">
+      <div class="rule-col">
+        <div class="rule-col-title">С every (ед. число)</div>
+        <div class="rule-ex"><span class="ex-sub">I see my roommate</span><span class="ex-v">every</span><span class="ex-obj">morning.</span></div>
+        <div class="rule-ex"><span class="ex-sub">I pay my bills</span><span class="ex-v">every</span><span class="ex-obj">month.</span></div>
+        <div class="rule-ex"><span class="ex-sub">I see my doctor</span><span class="ex-v">every</span><span class="ex-obj">year.</span></div>
+      </div>
+    </div>
+    <div class="rule-note">
+      <span class="rule-correct">Every</span> требует существительного в <strong>единственном числе</strong>.<br>
+      <span class="rule-correct">ВЕРНО:</span> every morning, every month, every year<br>
+      <span class="rule-wrong">НЕВЕРНО:</span> every <s>mornings</s>
+    </div>
+  </div>
+
+  <!-- Правило 11: What time / When -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <span class="rule-num">11</span>
+      <div>
+        <div class="rule-title">WHAT TIME…? / WHEN…?</div>
+        <div class="rule-subtitle">Вопросы о времени: точный час или общее время</div>
+      </div>
+    </div>
+    <div class="rule-schema">
+      <span class="schema-sub">What time / When</span>
+      <span class="schema-plus">+</span>
+      <span class="schema-verb">do / does</span>
+      <span class="schema-plus">+</span>
+      <span class="schema-sub">подлежащее</span>
+      <span class="schema-plus">+</span>
+      <span class="schema-verb">глагол…?</span>
+    </div>
+    <table class="rule-table">
+      <thead>
+        <tr><th>Вопрос</th><th>Ответ</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="rule-em">What time</span> do you get up?</td>
+          <td>I get up <strong>at seven o'clock</strong>.</td>
+        </tr>
+        <tr>
+          <td><span class="rule-em">What time</span> does the movie start?</td>
+          <td>It starts <strong>at eight</strong>.</td>
+        </tr>
+        <tr>
+          <td><span class="rule-em">When</span> do you do your homework?</td>
+          <td>I do it <strong>in the evening</strong>.</td>
+        </tr>
+        <tr>
+          <td><span class="rule-em">When</span> does he play football?</td>
+          <td>He plays <strong>on Saturdays</strong>.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="rule-columns">
+      <div class="rule-col">
+        <div class="rule-col-title">What time — точный час</div>
+        <div class="rule-ex"><span class="ex-sub">What time</span><span class="ex-obj">is it?</span></div>
+        <div class="rule-ex"><span class="ex-sub">→</span><span class="ex-obj">at nine o'clock, at half past three</span></div>
+      </div>
+      <div class="rule-col">
+        <div class="rule-col-title">When — общее время</div>
+        <div class="rule-ex"><span class="ex-sub">When</span><span class="ex-obj">is your birthday?</span></div>
+        <div class="rule-ex"><span class="ex-sub">→</span><span class="ex-obj">in the morning, on Mondays, in June</span></div>
+      </div>
+    </div>
+    <div class="rule-note">
+      <span class="rule-correct">What time</span> используется, когда спрашивают про <strong>точное время на часах</strong> (at 9 o'clock).<br>
+      <span class="rule-correct">When</span> — более общий вопрос: может отвечать временем суток, днём недели, месяцем и т.д. (in the evening, on Mondays, in June).
+    </div>
+  </div>
+
+  <!-- Правило 12: Past Simple (1) - be -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <span class="rule-num">12</span>
+      <div>
+        <div class="rule-title">PAST SIMPLE (1): BE</div>
+        <div class="rule-subtitle">Was / were — прошедшее время глагола BE</div>
+      </div>
+    </div>
+    <div class="rule-schema">
+      <span class="schema-sub">I / he / she / it</span>
+      <span class="schema-plus">+</span>
+      <span class="schema-verb">was</span>
+      <span class="schema-divider"></span>
+      <span class="schema-sub">you / we / they</span>
+      <span class="schema-plus">+</span>
+      <span class="schema-verb">were</span>
+    </div>
+    <table class="rule-table">
+      <thead>
+        <tr><th>Вопрос</th><th>Краткий ответ</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="rule-em">Was</span> he at home?</td><td>Yes, he was. / No, he wasn't.</td></tr>
+        <tr><td><span class="rule-em">Were</span> they ready?</td><td>Yes, they were. / No, they weren't.</td></tr>
+      </tbody>
+    </table>
+    <div class="rule-note">
+      Отрицание: <strong>wasn't</strong> = was not, <strong>weren't</strong> = were not.<br>
+      <span class="rule-correct">I was born</span> in 1990. / <span class="rule-correct">It wasn't</span> expensive.
+    </div>
+  </div>
+
+  <!-- Правило 13: Past Simple (2) - regular/irregular -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <span class="rule-num">13</span>
+      <div>
+        <div class="rule-title">PAST SIMPLE (2): REGULAR AND IRREGULAR VERBS</div>
+        <div class="rule-subtitle">Утверждение и Wh-вопросы в прошедшем времени</div>
+      </div>
+    </div>
+    <div class="rule-schema">
+      <span class="schema-sub">правильные глаголы</span>
+      <span class="schema-plus">+</span>
+      <span class="schema-verb">-ed</span>
+      <span class="schema-divider"></span>
+      <span class="schema-sub">неправильные глаголы</span>
+      <span class="schema-plus">→</span>
+      <span class="schema-verb">особая форма</span>
+    </div>
+    <table class="rule-table">
+      <thead>
+        <tr><th>Глагол</th><th>Past Simple</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>work</td><td>work<strong>ed</strong></td></tr>
+        <tr><td>study</td><td>stud<strong>ied</strong></td></tr>
+        <tr><td>go</td><td><span class="rule-em">went</span></td></tr>
+        <tr><td>see</td><td><span class="rule-em">saw</span></td></tr>
+        <tr><td>have</td><td><span class="rule-em">had</span></td></tr>
+        <tr><td>do</td><td><span class="rule-em">did</span></td></tr>
+        <tr><td>get</td><td><span class="rule-em">got</span></td></tr>
+      </tbody>
+    </table>
+    <div class="rule-note">
+      Wh-вопрос: <span class="rule-correct">What did you do</span> yesterday? — I <strong>watched</strong> a movie.<br>
+      Список неправильных глаголов нужно запоминать — они не подчиняются правилу -ed.
+    </div>
+  </div>
+
+  <!-- Правило 14: Past Simple (3) - negative/questions -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <span class="rule-num">14</span>
+      <div>
+        <div class="rule-title">PAST SIMPLE (3): NEGATIVE AND YES/NO QUESTIONS</div>
+        <div class="rule-subtitle">Did / didn't в прошедшем времени</div>
+      </div>
+    </div>
+    <div class="rule-schema">
+      <span class="schema-sub">подлежащее</span>
+      <span class="schema-plus">+</span>
+      <span class="schema-verb">did / didn't</span>
+      <span class="schema-plus">+</span>
+      <span class="schema-verb">базовая форма глагола</span>
+    </div>
+    <table class="rule-table">
+      <thead>
+        <tr><th>Вопрос</th><th>Краткий ответ</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="rule-em">Did</span> you go?</td><td>Yes, I did. / No, I didn't.</td></tr>
+      </tbody>
+    </table>
+    <div class="rule-note">
+      После <strong>did/didn't</strong> глагол всегда в <strong>базовой форме</strong>, без -ed.<br>
+      <span class="rule-correct">ВЕРНО:</span> I didn't <strong>go</strong>. &nbsp; <span class="rule-wrong">НЕВЕРНО:</span> I didn't <s>went</s>.
+    </div>
+  </div>
+
+  <!-- Правило 15: Can/Could -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <span class="rule-num">15</span>
+      <div>
+        <div class="rule-title">CAN / CAN'T; COULD / COULDN'T</div>
+        <div class="rule-subtitle">Умение — в настоящем и в прошедшем</div>
+      </div>
+    </div>
+    <div class="rule-schema">
+      <span class="schema-sub">подлежащее</span>
+      <span class="schema-plus">+</span>
+      <span class="schema-verb">can / can't</span>
+      <span class="schema-divider"></span>
+      <span class="schema-sub">подлежащее</span>
+      <span class="schema-plus">+</span>
+      <span class="schema-verb">could / couldn't</span>
+    </div>
+    <table class="rule-table">
+      <thead>
+        <tr><th>Пример</th><th>Перевод</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="rule-em">Can</span> you swim?</td><td>Ты умеешь плавать?</td></tr>
+        <tr><td>I <span class="rule-em">can't</span> cook.</td><td>Я не умею готовить.</td></tr>
+        <tr><td>She <span class="rule-em">could</span> read at 4.</td><td>Она умела читать в 4 года.</td></tr>
+      </tbody>
+    </table>
+    <div class="rule-note">
+      <strong>Can/could</strong> не меняются по лицам — без -s: <span class="rule-correct">he can</span> (не <s>cans</s>).<br>
+      После can/could/can't/couldn't глагол в базовой форме без <strong>to</strong>: can <strong>swim</strong> (не <s>to swim</s>).
+    </div>
+  </div>
+
+  <!-- Правило 16: Articles -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <span class="rule-num">16</span>
+      <div>
+        <div class="rule-title">ARTICLES: A, AN, THE</div>
+        <div class="rule-subtitle">Неопределённый и определённый артикль</div>
+      </div>
+    </div>
+    <table class="rule-table">
+      <thead>
+        <tr><th>Артикль</th><th>Когда</th><th>Пример</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="rule-em">a</span></td><td>перед согласным звуком</td><td>a book, a car</td></tr>
+        <tr><td><span class="rule-em">an</span></td><td>перед гласным звуком</td><td>an apple, an hour</td></tr>
+        <tr><td><span class="rule-em">the</span></td><td>конкретный предмет / уже упомянут</td><td>the sun, the book</td></tr>
+      </tbody>
+    </table>
+    <div class="rule-note">
+      Важен именно <strong>звук</strong>, а не буква: <span class="rule-correct">an hour</span> (h не произносится), но <span class="rule-correct">a university</span> (звучит как «ю»).<br>
+      С неисчисляемыми и множественным числом «вообще» артикль не нужен: I like <strong>dogs</strong>. (а не <s>the dogs</s>)
+    </div>
+  </div>
+
+  <!-- Правило 17: There + Be -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <span class="rule-num">17</span>
+      <div>
+        <div class="rule-title">THERE + BE</div>
+        <div class="rule-subtitle">Конструкция «There is / There are»</div>
+      </div>
+    </div>
+    <table class="rule-table">
+      <thead>
+        <tr><th>There + be</th><th>Подлежащее</th><th>Место</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="rule-em">There</span> <span class="rule-strong">is</span></td>
+          <td>a bird</td>
+          <td>in the tree.</td>
+        </tr>
+        <tr>
+          <td><span class="rule-em">There</span> <span class="rule-strong">are</span></td>
+          <td>four birds</td>
+          <td>in the tree.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="rule-schema">
+      <span class="schema-sub">there + is</span>
+      <span class="schema-plus">=</span>
+      <span class="schema-verb">there's</span>
+      <span class="schema-divider"></span>
+      <span class="schema-sub">there + are</span>
+      <span class="schema-plus">=</span>
+      <span class="schema-verb">there're</span>
+    </div>
+    <div class="rule-note">
+      <span class="rule-correct">There + be</span> используется, чтобы сказать о существовании чего-либо в определённом месте. Подлежащее стоит <strong>после</strong> глагола:<br>
+      <span class="rule-correct">there + is</span> + существительное в единственном числе<br>
+      <span class="rule-correct">there + are</span> + существительное во множественном числе
+    </div>
+  </div>
+
+  <!-- Правило 18: Is there...? / Are there...? -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <span class="rule-num">18</span>
+      <div>
+        <div class="rule-title">IS THERE…? / ARE THERE…?</div>
+        <div class="rule-subtitle">Вопросы, краткие ответы и отрицание к there is / there are</div>
+      </div>
+    </div>
+    <table class="rule-table">
+      <thead>
+        <tr><th></th><th>Вопрос</th><th>Краткий ответ</th><th>Перевод</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Singular</td>
+          <td><span class="rule-em">Is there</span> a table?</td>
+          <td>Yes, <span class="rule-strong">there is.</span> / No, <span class="rule-strong">there isn't.</span></td>
+          <td>Здесь есть стол?</td>
+        </tr>
+        <tr>
+          <td>Plural</td>
+          <td><span class="rule-em">Are there</span> <span class="rule-strong">any</span> chairs?</td>
+          <td>Yes, <span class="rule-strong">there are.</span> / No, <span class="rule-strong">there aren't.</span></td>
+          <td>Здесь есть стулья?</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="rule-schema">
+      <div class="schema-group">
+        <span class="schema-sub">Is there</span>
+        <span class="schema-plus">+</span>
+        <span class="schema-verb">a / an + сущ. ед.ч.</span>
+      </div>
+      <div class="schema-group">
+        <span class="schema-sub">Are there</span>
+        <span class="schema-plus">+</span>
+        <span class="schema-verb">any + сущ. мн.ч.</span>
+      </div>
+    </div>
+    <div class="rule-note">
+      Отрицание: <span class="rule-correct">There isn't a table.</span> / <span class="rule-correct">There aren't any chairs.</span> (isn't = is not, aren't = are not — сокращаются свободно).<br>
+      А в кратких ответах после <strong>Yes</strong> сокращения не используются: <span class="rule-correct">ВЕРНО</span> Yes, there is. — <span class="rule-wrong">НЕВЕРНО</span> Yes, <s>there's</s>.
+    </div>
+  </div>
+
+  <!-- Правило 19: How much/How many; Some/Any/A -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <span class="rule-num">19</span>
+      <div>
+        <div class="rule-title">HOW MUCH…? / HOW MANY…? — SOME / ANY / A</div>
+        <div class="rule-subtitle">Исчисляемые и неисчисляемые существительные</div>
+      </div>
+    </div>
+    <div class="rule-schema">
+      <span class="schema-sub">How many</span>
+      <span class="schema-plus">+</span>
+      <span class="schema-verb">сущ. мн.ч. (countable)</span>
+      <span class="schema-divider"></span>
+      <span class="schema-sub">How much</span>
+      <span class="schema-plus">+</span>
+      <span class="schema-verb">неисчисл. сущ. (uncountable)</span>
+    </div>
+    <table class="rule-table">
+      <thead>
+        <tr><th>Пример</th><th>Перевод</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="rule-em">How many</span> apples have you got?</td><td>Сколько у тебя яблок?</td></tr>
+        <tr><td><span class="rule-em">How much</span> money have you got?</td><td>Сколько у тебя денег?</td></tr>
+        <tr><td>I've got <span class="rule-em">some</span> apples.</td><td>У меня есть немного яблок.</td></tr>
+        <tr><td>I haven't got <span class="rule-em">any</span> money.</td><td>У меня нет денег.</td></tr>
+      </tbody>
+    </table>
+    <div class="rule-note">
+      <span class="rule-correct">Some</span> — в утверждениях; <span class="rule-correct">any</span> — в вопросах и отрицаниях.<br>
+      <span class="rule-correct">A / an</span> — только с исчисляемыми существительными в единственном числе: a banana.
+    </div>
+  </div>
+
+  <!-- Правило 20: Present Continuous -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <span class="rule-num">20</span>
+      <div>
+        <div class="rule-title">PRESENT CONTINUOUS</div>
+        <div class="rule-subtitle">Действие, происходящее сейчас</div>
+      </div>
+    </div>
+    <div class="rule-schema">
+      <span class="schema-sub">am / is / are</span>
+      <span class="schema-plus">+</span>
+      <span class="schema-verb">глагол + -ing</span>
+    </div>
+    <table class="rule-table">
+      <thead>
+        <tr><th>Вопрос</th><th>Краткий ответ</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="rule-em">Is</span> he work<strong>ing</strong>?</td><td>Yes, he is. / No, he isn't.</td></tr>
+      </tbody>
+    </table>
+    <div class="rule-columns">
+      <div class="rule-col">
+        <div class="rule-col-title">Утверждение</div>
+        <div class="rule-ex"><span class="ex-sub">I</span><span class="ex-v">'m</span><span class="ex-obj">working.</span></div>
+        <div class="rule-ex"><span class="ex-sub">She</span><span class="ex-v">'s</span><span class="ex-obj">working.</span></div>
+      </div>
+      <div class="rule-col">
+        <div class="rule-col-title">Отрицание</div>
+        <div class="rule-ex"><span class="ex-sub">I</span><span class="ex-v">'m not</span><span class="ex-obj">working.</span></div>
+        <div class="rule-ex"><span class="ex-sub">She</span><span class="ex-v">isn't</span><span class="ex-obj">working.</span></div>
+      </div>
+    </div>
+    <div class="rule-note">
+      Правописание -ing: <strong>make → making</strong> (убираем e), <strong>run → running</strong> (удваиваем согласную).
+    </div>
+  </div>
+
+  <!-- Правило 21: Present Simple or Present Continuous -->
+  <div class="rule-card">
+    <div class="rule-header">
+      <span class="rule-num">21</span>
+      <div>
+        <div class="rule-title">PRESENT SIMPLE OR PRESENT CONTINUOUS</div>
+        <div class="rule-subtitle">Привычка/факт или действие в моменте</div>
+      </div>
+    </div>
+    <div class="rule-columns">
+      <div class="rule-col">
+        <div class="rule-col-title">Present Simple — обычно, факты</div>
+        <div class="rule-ex"><span class="ex-sub">I</span><span class="ex-obj">usually walk to work.</span></div>
+        <div class="rule-ex"><span class="ex-sub">She</span><span class="ex-obj">works every day.</span></div>
+      </div>
+      <div class="rule-col">
+        <div class="rule-col-title">Present Continuous — сейчас, сегодня</div>
+        <div class="rule-ex"><span class="ex-sub">I</span><span class="ex-obj">'m walking to work now.</span></div>
+        <div class="rule-ex"><span class="ex-sub">She</span><span class="ex-obj">'s working today.</span></div>
+      </div>
+    </div>
+    <div class="rule-note">
+      Слова-маркеры Present Simple: <strong>usually, always, every day</strong>. Present Continuous: <strong>now, at the moment, today</strong>.<br>
+      Глаголы чувств/состояния (like, want, know, love) обычно <strong>не</strong> используются в Continuous: <span class="rule-correct">I like</span> tea (а не <s>I'm liking</s>).
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal: Add Word -->
+<div class="modal-overlay" id="modalWord">
+  <div class="modal">
+    <div class="modal-title">Добавить слово</div>
+    <div class="form-group">
+      <label class="form-label" for="inputEN">Английское слово</label>
+      <input class="form-input" id="inputEN" type="text" placeholder="например: sunrise" autocomplete="off" spellcheck="false">
+      <div class="form-error" id="errEN">Введите английское слово</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="inputRU">Перевод на русский</label>
+      <input class="form-input" id="inputRU" type="text" placeholder="например: рассвет" autocomplete="off">
+      <div class="form-error" id="errRU">Введите перевод</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="selectSection">Раздел</label>
+      <select class="form-select" id="selectSection"></select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" id="cancelWord">Отмена</button>
+      <button class="btn-primary" id="saveWord">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Add Section -->
+<div class="modal-overlay" id="modalSection">
+  <div class="modal">
+    <div class="modal-title">Новый раздел</div>
+    <div class="form-group">
+      <label class="form-label" for="inputSectionName">Название раздела</label>
+      <input class="form-input" id="inputSectionName" type="text" placeholder="например: ПРИРОДА" autocomplete="off">
+      <div class="form-error" id="errSection">Введите название раздела</div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" id="cancelSection">Отмена</button>
+      <button class="btn-primary" id="saveSection">Создать</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Game Topics -->
+<div class="modal-overlay" id="modalGameTopics">
+  <div class="modal modal-wide">
+    <div class="modal-title">Темы для игры</div>
+    <div class="topics-toolbar">
+      <button class="topics-toolbar-btn" id="topicsSelectAll">Выбрать все</button>
+      <button class="topics-toolbar-btn" id="topicsSelectNone">Снять все</button>
+    </div>
+    <div class="topics-list" id="topicsList"></div>
+    <div class="form-error" id="errTopics">Выберите хотя бы одну тему</div>
+    <div class="modal-actions">
+      <button class="btn-secondary" id="cancelGameTopics">Отмена</button>
+      <button class="btn-primary" id="applyGameTopics">Применить</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Game Round Size -->
+<div class="modal-overlay" id="modalGameCount">
+  <div class="modal">
+    <div class="modal-title">Количество слов в раунде</div>
+    <div class="count-mode-toggle">
+      <button type="button" class="count-mode-btn" id="countModeFixed">Заданное число</button>
+      <button type="button" class="count-mode-btn" id="countModeAll">Все слова</button>
+    </div>
+    <div class="form-group" id="countInputGroup">
+      <label class="form-label" for="inputRoundSize">Сколько слов</label>
+      <input class="form-input" id="inputRoundSize" type="number" min="1" step="1" inputmode="numeric" placeholder="например: 20">
+      <div class="count-hint">Доступно слов в выбранных темах: <span id="maxRoundSizeHint">…</span></div>
+      <div class="form-error" id="errRoundSize">Введите число от 1 до доступного количества</div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" id="cancelGameCount">Отмена</button>
+      <button class="btn-primary" id="applyGameCount">Применить</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Диагностика ошибок JS — показывает проблему прямо на экране
+window.onerror = function(msg, src, line) {
+  var el = document.getElementById('js-err');
+  if (el) { el.style.display = 'block'; el.textContent = 'JS ошибка (стр.' + line + '): ' + msg; }
+  return false;
+};
+window.addEventListener('unhandledrejection', function(e) {
+  var el = document.getElementById('js-err');
+  if (el) { el.style.display = 'block'; el.textContent = 'JS ошибка: ' + (e.reason && e.reason.message || e.reason); }
+});
+
+const BASE_SECTIONS = [
+  { id:1,  name:"ПРОФЕССИИ И РАБОТА", words:[["law firm","юридическая компания"],["IT specialist","IT специалист"],["business owner","владелец бизнеса"],["employee","работник"],["accountant","бухгалтер"],["musician","музыкант"],["lawyer","юрист / адвокат"],["mechanic","механик"],["taxi driver","таксист"],["waitress","официантка"],["receptionist","администратор"],["estate agent","агент по недвижимости"],["coach","тренер"],["colleague","напарник / коллега"],["unemployed","безработный"],["retired","на пенсии / пенсионер"],["go to work","ходить на работу"],["he doesn't have a job","у него нет работы"]]},
+  { id:2,  name:"ЭМОЦИИ И СОСТОЯНИЯ", words:[["happy","счастливый"],["excited","взволнованный"],["tired","усталый"],["angry","злой"],["scared","испуганный"],["bored","скучающий"],["sad","грустный"],["surprised","удивлённый"],["confused","растерянный / в замешательстве"],["jealous","ревнивый / завидующий"],["frustrated","расстроенный"],["I'm surprised","я удивлён"],["he is homesick","он скучает по дому"]]},
+  { id:3,  name:"ПРИЛАГАТЕЛЬНЫЕ", words:[["amazing","великолепный / классный"],["exciting","захватывающий / увлекательный"],["intelligent / smart / clever","умный"],["stupid","глупый"],["boring","скучный / неинтересный"],["terrible","ужасный"],["hard / difficult","сложный / трудный"],["ugly","некрасивый"],["thin","худой"],["fat","толстый"],["tall","высокий"],["poor","бедный"],["cheap","дешёвый"],["expensive","дорогой"],["heavy","тяжёлый"],["unusual","необычный"],["convenient","удобный"],["disgusting","противный / отвратительный"],["spicy","острый"],["wrong","неправильный"],["long","длинный"],["important","важный"],["incredible","невероятный / потрясающий"],["wonderful","замечательный / чудесный"],["brilliant","блестящий / гениальный"],["dirty","грязный"]]},
+  { id:4,  name:"СЕМЬЯ И ОТНОШЕНИЯ", words:[["nephew","племянник"],["niece","племянница"],["roommate","сосед по квартире"],["divorced","разведённый"],["Sonya has her own bedroom","у Сони своя спальня"]]},
+  { id:5,  name:"ДОМ — ГОСТИНАЯ / СПАЛЬНЯ", words:[["apartment","квартира"],["armchair","кресло"],["sofa / couch","диван"],["coffee table","журнальный столик"],["lamp","лампа"],["carpet","ковёр"],["curtains","шторы"],["bookcase","книжный шкаф"],["mirror","зеркало"],["plant","растение"],["floor","пол"],["window","окно"],["door","дверь"],["ceiling","потолок"],["shelves","полки"],["desk","рабочий стол"],["cabinets","шкафы"],["stereo system","музыкальный центр"],["TV","телевизор"],["hall","прихожая"],["doorway","дверной проём"],["living room","гостиная / зал"]]},
+  { id:6,  name:"ДОМ — КУХНЯ", words:[["fridge","холодильник"],["freezer","морозильник"],["oven","духовка"],["microwave","микроволновка"],["stove","плита"],["sink","раковина"],["kitchen counter","кухонная столешница"],["kettle","чайник (электрический)"],["tea pot","чайник (заварочный)"],["airfryer","аэрофритюрница"],["pan","сковорода"],["pot","кастрюля"],["plate","тарелка"],["cup","чашка"],["fork","вилка"],["spoon","ложка"],["knife","нож"],["spices","специи"],["dishes","посуда"]]},
+  { id:7,  name:"ДОМ — ВАННАЯ КОМНАТА", words:[["bath","ванна"],["shower","душ"],["toilet","туалет"],["toilet paper","туалетная бумага"],["shampoo","шампунь"],["towel","полотенце"],["mat","коврик"],["shelf","полка"],["sink","раковина"]]},
+  { id:8,  name:"РЕМОНТ И БЫТОВЫЕ ДЕЛА", words:[["renovation","ремонт"],["renovate an apartment","ремонтировать квартиру"],["break","ломать"],["fix / repair","отремонтировать"],["shovel","лопата"]]},
+  { id:9,  name:"СПОРТ И АКТИВНЫЙ ОТДЫХ", words:[["go skiing","кататься на лыжах"],["go cycling","кататься на велосипеде"],["go biking (US)","кататься на велосипеде (амер. вариант go cycling)"],["bike","велосипед"],["ride a quad bike","кататься на квадроцикле"],["quad bike","квадроцикл"],["go to the gym","ходить в спортзал"],["play chess","играть в шахматы"],["go to the cinema","ходить в кино"],["hang out with friends","проводить время с друзьями"],["go on vacation","ехать в отпуск"],["amusement park","парк аттракционов"],["roller coaster","американские горки"],["rides","аттракционы"],["a long ride","длительная прогулка / поездка на велосипеде"],["bike ride","велопробег"],["take photos","фотографировать"],["watch sport on TV","смотреть спорт по телевизору"],["play video games","играть в видеоигры"],["play tennis","играть в теннис"],["read books or magazines","читать книги или журналы"],["go swimming","плавать"],["go running","бегать"],["go clubbing","ходить по клубам"],["listen to music","слушать музыку"],["listen to the radio","слушать радио"]]},
+  { id:10, name:"ДАЙВИНГ И СНАРЯЖЕНИЕ", words:[["equipment / gear","снаряжение"],["snorkel","трубка для дыхания"],["mask","маска"],["fins","ласты"],["tank","баллон с воздухом"]]},
+  { id:11, name:"МОРСКИЕ ЖИВОТНЫЕ", words:[["shark","акула"],["whale","кит"],["hammerfish","рыба-молот"]]},
+  { id:12, name:"ЖИВОТНЫЕ И НАСЕКОМЫЕ", words:[["cockroach","таракан"],["spider web","паутина"],["puppy","щенок"]]},
+  { id:13, name:"ПУТЕШЕСТВИЯ И ТРАНСПОРТ", words:[["start my car","завести машину"],["suitcase","чемодан"],["layover","пересадка"],["route","маршрут"],["in the outskirts / suburbs","в пригороде"],["out of town","за городом / за город"],["river bank","набережная / берег реки"],["driver's license","права"],["security check","досмотр"],["a tent","палатка"],["go camping","пойти в поход с палатками"],["a camping site","кемпинг / место для кемпинга"],["We have a layover in Dubai","у нас пересадка в Дубае"],["local people","местные люди"],["palace","дворец"]]},
+  { id:14, name:"ЕДА", words:[["boiled lamb","варёная баранина"],["fried","жареный"],["fried chicken","жареная курица"],["Easter cake","кулич"],["chewing gum","жевательная резинка"]]},
+  { id:15, name:"ЗДОРОВЬЕ", words:[["I got sick","я заболел"],["I have a cough","у меня кашель"],["I'm coughing","я кашляю"],["I'm taking medicine","я принимаю лекарства"],["I will recover","я выздоровлю"]]},
+  { id:16, name:"ПРЕДЛОГИ МЕСТА", words:[["on","на"],["in","в"],["above","над"],["under","под"],["behind","позади"],["between","между"],["next to / near","рядом"],["in front of","перед"]]},
+  { id:17, name:"ГАДЖЕТЫ И ПРЕДМЕТЫ БЫТА", words:[["charger","зарядка"],["headsets","наушники"],["business card","визитная карточка"],["buttons","кнопки"]]},
+  { id:18, name:"ОДЕЖДА И АКСЕССУАРЫ", words:[["belt","ремень"],["gloves","перчатки"],["wallet","кошелёк"]]},
+  { id:19, name:"ПОКУПКИ И ДЕНЬГИ", words:[["purchase","покупка"],["save up","экономить / копить"],["limited edition","специальное (ограниченное) издание"],["spend money on games","тратить деньги на игры"]]},
+  { id:20, name:"ПРИРОДА И ПОГОДА", words:[["big waves","большие волны"],["sunset","закат"],["clouds","облака"],["nice weather","хорошая погода"],["lake","озеро"]]},
+  { id:21, name:"РАЗВЛЕЧЕНИЯ И ПРАЗДНИКИ", words:[["plot","сюжет"],["ghost","привидение"],["celebrate Easter","праздновать Пасху"]]},
+  { id:22, name:"ТЕХНОЛОГИИ И ИГРЫ", words:[["survival game","игра на выживание"],["another planet","другая планета"],["AI","ИИ"],["I'm out of ammo","закончились патроны"]]},
+  { id:23, name:"ВРЕМЯ И ЧАСТОТА", words:[["often","часто"],["once a year","раз в год"],["always","всегда"],["usually","обычно"],["sometimes","иногда"],["never","никогда"],["hardly ever","почти никогда"],["immediately","сразу же"],["at a certain point","в один момент"],["in my childhood","в детстве"]]},
+  { id:24, name:"ВЫРАЖЕНИЯ И СВЯЗКИ", words:[["that's why","поэтому"],["it turned out","оказалось"],["it seemed to me","мне казалось"],["I missed the rest","я прослушал остальное"],["spend much time on","потратить много времени на"],["it is not worse than","не хуже чем"],["I hope","я надеюсь"],["hope","надеяться"],["fortunately","к счастью / хорошо, что"],["it kind of sucks","это отстой"],["the back side","обратная сторона / задняя сторона"],["the same","такой же / так же"],["it's wrong","это неправильно"],["ruin plans","разрушить планы"],["disaster","катастрофа / ужас"],["leave","оставлять / покидать"],["word","слово"]]},
+  { id:25, name:"МЕСЯЦЫ И ДНИ НЕДЕЛИ", words:[["January","январь"],["February","февраль"],["March","март"],["April","апрель"],["May","май"],["June","июнь"],["July","июль"],["August","август"],["September","сентябрь"],["October","октябрь"],["November","ноябрь"],["December","декабрь"],["Monday","понедельник"],["Tuesday","вторник"],["Wednesday","среда"],["Thursday","четверг"],["Friday","пятница"],["Saturday","суббота"],["Sunday","воскресенье"]]},
+  { id:26, name:"ВРЕМЯ СУТОК И РАСПИСАНИЕ", words:[["morning / the morning","утро"],["the afternoon","день (после полудня)"],["the evening","вечер"],["night","ночь"],["day","день"],["week / the week","неделя"],["month","месяц"],["nine o'clock","девять часов"],["half past three","половина четвёртого"],["Mondays","по понедельникам"],["Monday mornings","по утрам в понедельник"],["the weekend","выходные"],["Sunday afternoon","воскресенье днём"]]},
+  { id:27, name:"ФРАЗЫ — ПРЕДЛОЖЕНИЯ И СОВЕТЫ", words:[["What shall we get her?","Что мы ей подарим?"],["What about (an MP3 player)?","Что насчёт (плеера MP3)?"],["Why don't we get her (a book)?","А почему бы нам не подарить ей (книгу)?"],["Let's get her (a DVD).","Давай подарим ей (DVD)."],["I don't think so.","Я так не думаю."],["Maybe.","Может быть."],["That's a good idea.","Это хорошая идея."]]}
+];
+
+// ── STORAGE HELPERS (safe for Safari Private Mode) ──────────
+function lsGet(key, def) {
+  try { const v = localStorage.getItem(key); return v !== null ? v : def; } catch(e) { return def; }
+}
+function lsSet(key, val) {
+  try { localStorage.setItem(key, val); } catch(e) {}
+}
+function lsParse(key, def) {
+  try { const v = localStorage.getItem(key); return v !== null ? JSON.parse(v) : def; } catch(e) { return def; }
+}
+
+// ── STORAGE ─────────────────────────────────────────────────
+let customSections = lsParse('dict-custom-sections', []);
+let customWords    = lsParse('dict-custom-words',    []);
+let deletedWords   = lsParse('dict-deleted-words',   []);
+
+function isDeleted(en, ru, secId) {
+  return deletedWords.some(d => d.en === en && d.ru === ru && d.secId === secId);
+}
+
+// Working array: base + custom sections (words are shallow copies, minus deleted)
+const SECTIONS = BASE_SECTIONS.map(s => ({
+  ...s,
+  words: s.words.filter(([en, ru]) => !isDeleted(en, ru, s.id))
+}));
+customSections.forEach(cs => SECTIONS.push({ ...cs, words: [] }));
+
+// Inject custom words into their sections
+customWords.forEach(({en, ru, secId}) => {
+  const sec = SECTIONS.find(s => s.id === secId);
+  if (sec) sec.words.push([en, ru, true]); // third element = isCustom flag
+});
+
+// ── THEME ────────────────────────────────────────────────────
+const html = document.documentElement;
+const themeToggle = document.getElementById('themeToggle');
+const themeLabel  = document.getElementById('themeLabel');
+function setTheme(t) {
+  html.setAttribute('data-theme', t);
+  themeLabel.textContent = t === 'dark' ? 'Светлая' : 'Тёмная';
+  lsSet('dict-theme', t);
+}
+setTheme(lsGet('dict-theme', 'light'));
+themeToggle.addEventListener('click', () => setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'));
+
+// ── BUILD DOM ────────────────────────────────────────────────
+let allWordsRevealed = false;
+const mainContent = document.getElementById('mainContent');
+const noResults   = document.getElementById('noResults');
+const filterSel   = document.getElementById('sectionFilter');
+const sectionBlocks = {};
+
+function updateTotal() {
+  let t = 0;
+  SECTIONS.forEach(s => t += s.words.length);
+  document.getElementById('totalCount').textContent = t;
+}
+
+function pluralWords(n) {
+  const abs = Math.abs(n) % 100, last = abs % 10;
+  if (abs >= 11 && abs <= 19) return 'слов';
+  if (last === 1) return 'слово';
+  if (last >= 2 && last <= 4) return 'слова';
+  return 'слов';
+}
+
+function updateSectionCount(secId) {
+  const block = sectionBlocks[secId];
+  if (!block) return;
+  const sec = SECTIONS.find(s => s.id === secId);
+  if (!sec) return;
+  block.querySelector('.section-count').textContent = sec.words.length + ' ' + pluralWords(sec.words.length);
+}
+
+function buildWordRow(en, ru, isCustom) {
+  const row = document.createElement('div');
+  row.className = 'word-row';
+  row.dataset.en = en.toLowerCase();
+  row.dataset.ru = ru.toLowerCase();
+  row.dataset.enOrig = en;
+  if (isCustom) row.dataset.custom = '1';
+  row.innerHTML = `<span class="word-en">${esc(en)}</span><span class="word-sep">—</span><span class="word-ru" title="Нажмите, чтобы показать перевод">${esc(ru)}</span><button class="word-delete" title="Удалить">×</button>`;
+  if (allWordsRevealed) row.querySelector('.word-ru').classList.add('revealed');
+  row.querySelector('.word-ru').addEventListener('click', function() { this.classList.toggle('revealed'); });
+  row.querySelector('.word-delete').addEventListener('click', () => deleteWord(en, ru, row, isCustom));
+  return row;
+}
+
+function buildSectionBlock(sec) {
+  const block = document.createElement('div');
+  block.className = 'section-block';
+  block.dataset.secId = sec.id;
+  const customBadge = sec.isCustom ? '<span class="section-custom-badge">мой раздел</span>' : '';
+  block.innerHTML = `
+    <div class="section-header">
+      <span class="section-num">${sec.id}</span>
+      <span class="section-title">${esc(sec.name)}</span>
+      ${customBadge}
+      <span class="section-count">${sec.words.length} ${pluralWords(sec.words.length)}</span>
+      <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="words-list-wrap"><div class="words-list"></div></div>
+  `;
+  const list = block.querySelector('.words-list');
+  sec.words.forEach(([en, ru, isCustom]) => list.appendChild(buildWordRow(en, ru, isCustom)));
+  const hdr = block.querySelector('.section-header');
+  hdr.setAttribute('role', 'button');
+  hdr.setAttribute('aria-expanded', 'true');
+  hdr.addEventListener('click', () => {
+    const wrap = block.querySelector('.words-list-wrap');
+    if (block.classList.contains('collapsed')) {
+      // Expand
+      const h = wrap.scrollHeight;
+      block.classList.remove('collapsed');
+      hdr.setAttribute('aria-expanded', 'true');
+      wrap.style.overflow = 'hidden';
+      wrap.style.transition = 'height 0.25s ease';
+      wrap.style.height = h + 'px';
+      let done = false;
+      const onEnd = () => {
+        if (done) return; done = true;
+        wrap.style.height = '';
+        wrap.style.overflow = '';
+        wrap.style.transition = '';
+        wrap.removeEventListener('transitionend', onEnd);
+      };
+      wrap.addEventListener('transitionend', onEnd);
+      setTimeout(onEnd, 350);
+    } else {
+      // Collapse
+      wrap.style.overflow = 'hidden';
+      wrap.style.transition = 'height 0.25s ease';
+      wrap.style.height = wrap.scrollHeight + 'px';
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        wrap.style.height = '0px';
+        block.classList.add('collapsed');
+        hdr.setAttribute('aria-expanded', 'false');
+      }));
+    }
+  });
+  mainContent.insertBefore(block, noResults);
+  sectionBlocks[sec.id] = block;
+}
+
+function addFilterOption(sec) {
+  const opt = document.createElement('option');
+  opt.value = sec.id;
+  opt.textContent = `${sec.id}. ${sec.name}`;
+  filterSel.appendChild(opt);
+  // also add to word-modal select
+  const sel = document.getElementById('selectSection');
+  const o2 = document.createElement('option');
+  o2.value = sec.id;
+  o2.textContent = `${sec.id}. ${sec.name}`;
+  sel.appendChild(o2);
+}
+
+// Initial build
+SECTIONS.forEach(sec => {
+  buildSectionBlock(sec);
+  addFilterOption(sec);
+});
+updateTotal();
+
+// ── DELETE WORD ──────────────────────────────────────────────
+function deleteWord(en, ru, row, isCustom) {
+  if (!confirm(`Удалить «${en} — ${ru}»?`)) return;
+  const secId = parseInt(row.closest('.section-block').dataset.secId);
+  const sec = SECTIONS.find(s => s.id === secId);
+  if (sec) sec.words = sec.words.filter(([e, r]) => !(e === en && r === ru));
+  if (isCustom) {
+    customWords = customWords.filter(w => !(w.en === en && w.ru === ru && w.secId === secId));
+    lsSet('dict-custom-words', JSON.stringify(customWords));
+  } else {
+    deletedWords.push({ en, ru, secId });
+    lsSet('dict-deleted-words', JSON.stringify(deletedWords));
+  }
+  row.remove();
+  updateSectionCount(secId);
+  updateTotal();
+  applyFilters();
+}
+
+// ── SEARCH & FILTER ──────────────────────────────────────────
+const searchInput = document.getElementById('searchInput');
+const resetBtn    = document.getElementById('resetBtn');
+const acDropdown  = document.getElementById('acDropdown');
+let acActiveIndex = -1;
+
+function applyFilters() {
+  const q = searchInput.value.toLowerCase().trim();
+  document.body.classList.toggle('search-active', q.length > 0);
+  const secFilter = filterSel.value ? parseInt(filterSel.value) : null;
+  let anyVisible = false;
+  SECTIONS.forEach(sec => {
+    const block = sectionBlocks[sec.id];
+    if (!block) return;
+    if (secFilter && sec.id !== secFilter) { block.style.display = 'none'; return; }
+    const rows = block.querySelectorAll('.word-row');
+    let vis = 0;
+    rows.forEach(row => {
+      const match = !q || row.dataset.en.includes(q) || row.dataset.ru.includes(q);
+      row.style.display = match ? '' : 'none';
+      if (match) vis++;
+    });
+    block.style.display = vis > 0 ? '' : 'none';
+    if (vis > 0) {
+      anyVisible = true;
+      if (secFilter || q.length > 0) {
+        if (block.classList.contains('collapsed')) {
+          block.classList.remove('collapsed');
+          block.querySelector('.section-header')?.setAttribute('aria-expanded', 'true');
+          const wrap = block.querySelector('.words-list-wrap');
+          if (wrap) { wrap.style.height = ''; wrap.style.overflow = ''; wrap.style.transition = ''; }
+        }
+      }
+    }
+  });
+  noResults.classList.toggle('visible', !anyVisible);
+  resetBtn.classList.toggle('visible', q.length > 0);
+}
+
+function buildAC(query) {
+  if (!query) { closeAC(); return; }
+  const q = query.toLowerCase().trim();
+  const results = [];
+  for (const sec of SECTIONS) {
+    for (const [en, ru] of sec.words) {
+      if (en.toLowerCase().includes(q) || ru.toLowerCase().includes(q)) {
+        results.push({ en, ru });
+        if (results.length >= 8) break;
+      }
+    }
+    if (results.length >= 8) break;
+  }
+  if (!results.length) { closeAC(); return; }
+  acDropdown.innerHTML = '';
+  acActiveIndex = -1;
+  results.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'ac-item';
+    div.innerHTML = `<span class="ac-en">${hl(item.en, q)}</span><span class="ac-ru">${hl(item.ru, q)}</span>`;
+    div.addEventListener('mousedown', e => {
+      e.preventDefault();
+      jumpTo(item.en);
+      searchInput.value = item.en;
+      applyFilters();
+      closeAC();
+    });
+    acDropdown.appendChild(div);
+  });
+  acDropdown.classList.add('open');
+}
+
+function hl(text, q) {
+  const i = text.toLowerCase().indexOf(q);
+  if (i === -1) return esc(text);
+  return esc(text.slice(0, i)) + `<span class="ac-highlight">${esc(text.slice(i, i+q.length))}</span>` + esc(text.slice(i+q.length));
+}
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function closeAC() { acDropdown.classList.remove('open'); acDropdown.innerHTML = ''; acActiveIndex = -1; }
+
+function jumpTo(enText) {
+  document.querySelectorAll('.word-row').forEach(row => {
+    if (row.dataset.enOrig === enText) {
+      row.style.display = '';
+      const secBlock = row.closest('.section-block');
+      secBlock.style.display = '';
+      if (secBlock.classList.contains('collapsed')) {
+        secBlock.classList.remove('collapsed');
+        const wrapEl = secBlock.querySelector('.words-list-wrap');
+        if (wrapEl) { wrapEl.style.height = ''; wrapEl.style.overflow = ''; wrapEl.style.transition = ''; }
+        secBlock.querySelector('.section-header')?.setAttribute('aria-expanded', 'true');
+      }
+      row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      row.classList.remove('highlighted');
+      void row.offsetWidth;
+      row.classList.add('highlighted');
+      setTimeout(() => row.classList.remove('highlighted'), 1500);
+    }
+  });
+}
+
+searchInput.addEventListener('keydown', e => {
+  const items = acDropdown.querySelectorAll('.ac-item');
+  if (!items.length) return;
+  if (e.key === 'ArrowDown') { e.preventDefault(); acActiveIndex = Math.min(acActiveIndex+1, items.length-1); items.forEach((it,i) => it.classList.toggle('active', i===acActiveIndex)); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); acActiveIndex = Math.max(acActiveIndex-1, -1); items.forEach((it,i) => it.classList.toggle('active', i===acActiveIndex)); }
+  else if (e.key === 'Enter') { if (acActiveIndex >= 0) items[acActiveIndex].dispatchEvent(new MouseEvent('mousedown')); else { applyFilters(); closeAC(); } }
+  else if (e.key === 'Escape') closeAC();
+});
+searchInput.addEventListener('input', () => { applyFilters(); buildAC(searchInput.value); });
+searchInput.addEventListener('focus', () => { if (searchInput.value) buildAC(searchInput.value); });
+searchInput.addEventListener('blur', () => setTimeout(closeAC, 150));
+resetBtn.addEventListener('click', () => { searchInput.value = ''; resetBtn.classList.remove('visible'); closeAC(); applyFilters(); searchInput.focus(); });
+filterSel.addEventListener('change', applyFilters);
+
+// ── SHOW / HIDE ALL TRANSLATIONS ───────────────────────────────
+const revealAllBtn   = document.getElementById('revealAllBtn');
+const revealAllLabel = document.getElementById('revealAllLabel');
+const eyeIcon    = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+const eyeOffIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a20.3 20.3 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a20.3 20.3 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
+revealAllBtn.addEventListener('click', () => {
+  allWordsRevealed = !allWordsRevealed;
+  document.querySelectorAll('.word-ru').forEach(el => el.classList.toggle('revealed', allWordsRevealed));
+  revealAllBtn.classList.toggle('active', allWordsRevealed);
+  revealAllBtn.innerHTML = (allWordsRevealed ? eyeOffIcon : eyeIcon) + `<span id="revealAllLabel">${allWordsRevealed ? 'Скрыть все слова' : 'Показать все слова'}</span>`;
+});
+
+// ── EDIT MODE ────────────────────────────────────────────────
+const editModeBtn = document.getElementById('editModeBtn');
+editModeBtn.addEventListener('click', () => {
+  const active = document.body.classList.toggle('edit-mode');
+  editModeBtn.classList.toggle('active', active);
+  editModeBtn.innerHTML = active
+    ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg> Готово`
+    : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Редактировать`;
+});
+
+// ── MODAL: ADD WORD ──────────────────────────────────────────
+const modalWord   = document.getElementById('modalWord');
+const inputEN     = document.getElementById('inputEN');
+const inputRU     = document.getElementById('inputRU');
+const selectSec   = document.getElementById('selectSection');
+const errEN       = document.getElementById('errEN');
+const errRU       = document.getElementById('errRU');
+
+document.getElementById('openAddWord').addEventListener('click', () => {
+  inputEN.value = ''; inputRU.value = '';
+  errEN.classList.remove('visible'); errRU.classList.remove('visible');
+  modalWord.classList.add('open');
+  inputEN.focus();
+});
+document.getElementById('cancelWord').addEventListener('click', () => modalWord.classList.remove('open'));
+modalWord.addEventListener('click', e => { if (e.target === modalWord) modalWord.classList.remove('open'); });
+
+document.getElementById('saveWord').addEventListener('click', () => {
+  const en = inputEN.value.trim();
+  const ru = inputRU.value.trim();
+  const secId = parseInt(selectSec.value);
+  let ok = true;
+  if (!en) { errEN.classList.add('visible'); ok = false; } else errEN.classList.remove('visible');
+  if (!ru) { errRU.classList.add('visible'); ok = false; } else errRU.classList.remove('visible');
+  if (!ok) return;
+
+  const sec = SECTIONS.find(s => s.id === secId);
+  sec.words.push([en, ru, true]);
+  customWords.push({ en, ru, secId });
+  lsSet('dict-custom-words', JSON.stringify(customWords));
+
+  const block = sectionBlocks[secId];
+  block.querySelector('.words-list').appendChild(buildWordRow(en, ru, true));
+  updateSectionCount(secId);
+  updateTotal();
+  applyFilters();
+  modalWord.classList.remove('open');
+
+  // Scroll to and highlight
+  setTimeout(() => jumpTo(en), 100);
+});
+
+// Allow Enter key in word modal
+[inputEN, inputRU].forEach(inp => inp.addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('saveWord').click();
+}));
+
+// ── MODAL: ADD SECTION ───────────────────────────────────────
+const modalSection    = document.getElementById('modalSection');
+const inputSecName    = document.getElementById('inputSectionName');
+const errSection      = document.getElementById('errSection');
+
+document.getElementById('openAddSection').addEventListener('click', () => {
+  inputSecName.value = '';
+  errSection.classList.remove('visible');
+  modalSection.classList.add('open');
+  inputSecName.focus();
+});
+document.getElementById('cancelSection').addEventListener('click', () => modalSection.classList.remove('open'));
+modalSection.addEventListener('click', e => { if (e.target === modalSection) modalSection.classList.remove('open'); });
+
+document.getElementById('saveSection').addEventListener('click', () => {
+  const name = inputSecName.value.trim().toUpperCase();
+  if (!name) { errSection.classList.add('visible'); return; }
+  errSection.classList.remove('visible');
+
+  const maxId = Math.max(...SECTIONS.map(s => s.id));
+  const newSec = { id: maxId + 1, name, words: [], isCustom: true };
+  SECTIONS.push(newSec);
+  customSections.push(newSec);
+  lsSet('dict-custom-sections', JSON.stringify(customSections));
+
+  buildSectionBlock(newSec);
+  addFilterOption(newSec);
+  applyFilters();
+  modalSection.classList.remove('open');
+
+  // Scroll to new section
+  setTimeout(() => sectionBlocks[newSec.id]?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+});
+inputSecName.addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('saveSection').click(); });
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    modalWord.classList.remove('open');
+    modalSection.classList.remove('open');
+    modalGameTopics.classList.remove('open');
+    modalGameCount.classList.remove('open');
+  }
+});
+
+applyFilters();
+
+// Проверка: если через 2 сек нет ни одного раздела — показываем ошибку
+setTimeout(function() {
+  if (!document.querySelector('.section-block')) {
+    var el = document.getElementById('js-err');
+    if (el && el.style.display === 'none') {
+      el.style.display = 'block';
+      el.textContent = 'Словарь не загрузился. Попробуйте обновить страницу (потяните вниз или нажмите F5).';
+    }
+  }
+}, 2000);
+
+// ── GAME ─────────────────────────────────────────────────────
+let gameWords    = [];
+let gameIndex    = 0;
+let gameScore    = 0;
+let gameAnswered = false;
+let gameLog      = []; // {en, ru, userAnswer, correct}
+
+const gameViewEl     = document.getElementById('gameView');
+const gameWordEnEl   = document.getElementById('gameWordEn');
+const gameInputEl    = document.getElementById('gameInput');
+const gameSubmitEl   = document.getElementById('gameSubmit');
+const gameFeedbackEl = document.getElementById('gameFeedback');
+const gameCardEl     = document.getElementById('gameCard');
+const gameResultsEl  = document.getElementById('gameResults');
+const gameBarEl      = document.getElementById('gameProgressBar');
+
+// ── GAME TOPICS SELECTION ───────────────────────────────────
+let selectedGameSectionIds = lsParse('dict-game-topics', null); // null = все темы
+const modalGameTopics  = document.getElementById('modalGameTopics');
+const topicsListEl     = document.getElementById('topicsList');
+const errTopics        = document.getElementById('errTopics');
+const gameTopicsLabel  = document.getElementById('gameTopicsLabel');
+
+function pluralTopics(n) {
+  const abs = Math.abs(n) % 100, last = abs % 10;
+  if (abs >= 11 && abs <= 19) return 'тем';
+  if (last === 1) return 'тема';
+  if (last >= 2 && last <= 4) return 'темы';
+  return 'тем';
+}
+
+function getSelectedSectionIds() {
+  const validIds = SECTIONS.map(s => s.id);
+  if (!selectedGameSectionIds || selectedGameSectionIds.length === 0) return validIds;
+  const validSet = new Set(validIds);
+  const filtered = selectedGameSectionIds.filter(id => validSet.has(id));
+  return filtered.length ? filtered : validIds;
+}
+
+function updateGameTopicsLabel() {
+  const ids = getSelectedSectionIds();
+  if (ids.length === SECTIONS.length) {
+    gameTopicsLabel.textContent = 'Все темы';
+  } else if (ids.length === 1) {
+    const sec = SECTIONS.find(s => s.id === ids[0]);
+    gameTopicsLabel.textContent = sec ? sec.name : '1 тема';
+  } else {
+    gameTopicsLabel.textContent = ids.length + ' ' + pluralTopics(ids.length) + ' выбрано';
+  }
+}
+
+function openGameTopicsModal() {
+  const currentIds = new Set(getSelectedSectionIds());
+  topicsListEl.innerHTML = '';
+  SECTIONS.forEach(sec => {
+    const row = document.createElement('label');
+    row.className = 'topic-item';
+    row.innerHTML = `<input type="checkbox" value="${sec.id}" ${currentIds.has(sec.id) ? 'checked' : ''}><span class="topic-item-name">${esc(sec.name)}</span><span class="topic-item-count">${sec.words.length}</span>`;
+    topicsListEl.appendChild(row);
+  });
+  errTopics.classList.remove('visible');
+  modalGameTopics.classList.add('open');
+}
+
+document.getElementById('openGameTopics').addEventListener('click', openGameTopicsModal);
+document.getElementById('cancelGameTopics').addEventListener('click', () => modalGameTopics.classList.remove('open'));
+modalGameTopics.addEventListener('click', e => { if (e.target === modalGameTopics) modalGameTopics.classList.remove('open'); });
+
+document.getElementById('topicsSelectAll').addEventListener('click', () => {
+  topicsListEl.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = true);
+});
+document.getElementById('topicsSelectNone').addEventListener('click', () => {
+  topicsListEl.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+});
+
+document.getElementById('applyGameTopics').addEventListener('click', () => {
+  const checked = [...topicsListEl.querySelectorAll('input[type="checkbox"]:checked')].map(cb => parseInt(cb.value));
+  if (!checked.length) { errTopics.classList.add('visible'); return; }
+  selectedGameSectionIds = checked;
+  lsSet('dict-game-topics', JSON.stringify(selectedGameSectionIds));
+  updateGameTopicsLabel();
+  updateGameCountLabel();
+  modalGameTopics.classList.remove('open');
+  startRound();
+});
+
+updateGameTopicsLabel();
+
+// ── GAME ROUND SIZE ─────────────────────────────────────────
+let gameRoundConfig = lsParse('dict-game-round-config', { mode: 'fixed', size: 20 });
+const modalGameCount    = document.getElementById('modalGameCount');
+const gameCountLabel    = document.getElementById('gameCountLabel');
+const countModeFixedBtn = document.getElementById('countModeFixed');
+const countModeAllBtn   = document.getElementById('countModeAll');
+const countInputGroup   = document.getElementById('countInputGroup');
+const inputRoundSize    = document.getElementById('inputRoundSize');
+const errRoundSize      = document.getElementById('errRoundSize');
+const maxRoundSizeHint  = document.getElementById('maxRoundSizeHint');
+
+function getRoundSize(totalAvailable) {
+  if (totalAvailable <= 0) return 0;
+  if (gameRoundConfig.mode === 'all') return totalAvailable;
+  return Math.max(1, Math.min(gameRoundConfig.size || 20, totalAvailable));
+}
+
+function updateGameCountLabel() {
+  const total = getAllGameWords().length;
+  if (gameRoundConfig.mode === 'all') {
+    gameCountLabel.textContent = 'Все слова (' + total + ')';
+  } else {
+    const size = Math.max(1, Math.min(gameRoundConfig.size || 20, total || 1));
+    gameCountLabel.textContent = size + ' ' + pluralWords(size);
+  }
+}
+
+function setCountMode(mode) {
+  countModeFixedBtn.classList.toggle('active', mode === 'fixed');
+  countModeAllBtn.classList.toggle('active', mode === 'all');
+  countInputGroup.style.display = mode === 'fixed' ? '' : 'none';
+}
+
+function openGameCountModal() {
+  const total = getAllGameWords().length;
+  maxRoundSizeHint.textContent = total;
+  inputRoundSize.max = total;
+  inputRoundSize.value = gameRoundConfig.mode === 'fixed' ? gameRoundConfig.size : Math.min(20, total);
+  setCountMode(gameRoundConfig.mode);
+  errRoundSize.classList.remove('visible');
+  modalGameCount.classList.add('open');
+}
+
+document.getElementById('openGameCount').addEventListener('click', openGameCountModal);
+document.getElementById('cancelGameCount').addEventListener('click', () => modalGameCount.classList.remove('open'));
+modalGameCount.addEventListener('click', e => { if (e.target === modalGameCount) modalGameCount.classList.remove('open'); });
+countModeFixedBtn.addEventListener('click', () => setCountMode('fixed'));
+countModeAllBtn.addEventListener('click', () => setCountMode('all'));
+
+document.getElementById('applyGameCount').addEventListener('click', () => {
+  const mode = countModeAllBtn.classList.contains('active') ? 'all' : 'fixed';
+  const total = getAllGameWords().length;
+  if (mode === 'fixed') {
+    const val = parseInt(inputRoundSize.value, 10);
+    if (!val || val < 1 || val > total) { errRoundSize.classList.add('visible'); return; }
+    gameRoundConfig = { mode: 'fixed', size: val };
+  } else {
+    gameRoundConfig = { mode: 'all', size: gameRoundConfig.size || 20 };
+  }
+  lsSet('dict-game-round-config', JSON.stringify(gameRoundConfig));
+  updateGameCountLabel();
+  modalGameCount.classList.remove('open');
+  startRound();
+});
+inputRoundSize.addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('applyGameCount').click(); });
+
+updateGameCountLabel();
+
+function getAllGameWords() {
+  const ids = new Set(getSelectedSectionIds());
+  const all = [];
+  SECTIONS.forEach(sec => { if (ids.has(sec.id)) sec.words.forEach(([en, ru]) => all.push({ en, ru })); });
+  return all;
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function checkGameAnswer(input, correctRu) {
+  const norm = s => s.trim().toLowerCase().replace(/\s+/g, ' ');
+  const inp = norm(input);
+  const variants = correctRu.split(' / ').map(norm);
+  const all = [...variants];
+  variants.forEach(v => {
+    const stripped = v.replace(/\s*\([^)]*\)/g, '').trim();
+    if (stripped && stripped !== v) all.push(stripped);
+  });
+  return all.includes(inp);
+}
+
+function startRound() {
+  const all = getAllGameWords();
+  const size = getRoundSize(all.length);
+  gameWords    = shuffle(all).slice(0, size);
+  gameIndex    = 0;
+  gameScore    = 0;
+  gameAnswered = false;
+  gameLog      = [];
+  gameCardEl.style.display    = '';
+  gameResultsEl.style.display = 'none';
+  gameBarEl.style.width = '0%';
+  showGameWord();
+}
+
+function updateGameHeader() {
+  document.getElementById('gameWordNum').textContent   = gameIndex + 1;
+  document.getElementById('gameWordTotal').textContent = gameWords.length;
+  document.getElementById('gameScoreNum').textContent  = gameScore;
+}
+
+function showGameWord() {
+  gameAnswered = false;
+  gameInputEl.value     = '';
+  gameInputEl.disabled  = false;
+  gameInputEl.className = 'game-input';
+  gameFeedbackEl.textContent = '';
+  gameFeedbackEl.className   = 'game-feedback';
+  gameSubmitEl.textContent   = 'Проверить';
+  gameWordEnEl.textContent   = gameWords[gameIndex].en;
+  updateGameHeader();
+  gameBarEl.style.width = (gameIndex / gameWords.length * 100) + '%';
+  setTimeout(() => gameInputEl.focus(), 50);
+}
+
+function submitGameAnswer() {
+  if (gameAnswered) {
+    gameIndex++;
+    if (gameIndex >= gameWords.length) { showGameResults(); }
+    else { showGameWord(); }
+    return;
+  }
+  const inp = gameInputEl.value.trim();
+  if (!inp) { gameInputEl.focus(); return; }
+
+  gameAnswered      = true;
+  gameInputEl.disabled = true;
+  const correct = checkGameAnswer(inp, gameWords[gameIndex].ru);
+
+  gameLog.push({ en: gameWords[gameIndex].en, ru: gameWords[gameIndex].ru, userAnswer: inp, correct });
+
+  if (correct) {
+    gameScore++;
+    gameInputEl.classList.add('correct-border');
+    gameFeedbackEl.textContent = 'Правильно!';
+    gameFeedbackEl.className   = 'game-feedback correct';
+  } else {
+    gameInputEl.classList.add('wrong-border');
+    gameFeedbackEl.textContent = 'Неверно. Правильный ответ: ' + gameWords[gameIndex].ru;
+    gameFeedbackEl.className   = 'game-feedback wrong';
+  }
+
+  document.getElementById('gameScoreNum').textContent = gameScore;
+  gameBarEl.style.width = ((gameIndex + 1) / gameWords.length * 100) + '%';
+  const isLast = gameIndex === gameWords.length - 1;
+  gameSubmitEl.textContent = isLast ? 'Результаты' : 'Далее';
+}
+
+function showGameResults() {
+  gameCardEl.style.display    = 'none';
+  gameResultsEl.style.display = 'block';
+
+  const wrongWords   = gameLog.filter(w => !w.correct);
+  const correctWords = gameLog.filter(w => w.correct);
+
+  document.getElementById('resultsCorrectNum').textContent = correctWords.length;
+  document.getElementById('resultsWrongNum').textContent   = wrongWords.length;
+
+  const pct = gameScore / gameWords.length;
+  let msg;
+  if (pct === 1)       msg = 'Идеально! Все слова правильно!';
+  else if (pct >= 0.8) msg = 'Отличный результат!';
+  else if (pct >= 0.6) msg = 'Хорошая работа, продолжайте!';
+  else if (pct >= 0.4) msg = 'Неплохо, но есть куда расти.';
+  else                 msg = 'Продолжайте практиковаться!';
+  document.getElementById('resultsMessage').textContent = msg;
+
+  // Wrong words list
+  const wrongSection = document.getElementById('resultsWrongSection');
+  const wrongContainer = document.getElementById('resultsWrongWords');
+  wrongContainer.innerHTML = '';
+  document.getElementById('resultsWrongTitle').textContent = 'Ошибки — ' + wrongWords.length;
+  wrongSection.style.display = wrongWords.length ? '' : 'none';
+  wrongWords.forEach(w => {
+    const div = document.createElement('div');
+    div.className = 'results-word-item item-wrong';
+    div.innerHTML = `<div class="results-item-row"><span class="results-item-en">${esc(w.en)}</span><span class="results-item-sep">—</span><span class="results-item-ru">${esc(w.ru)}</span></div><div class="results-item-user">Вы написали: <s>${esc(w.userAnswer)}</s></div>`;
+    wrongContainer.appendChild(div);
+  });
+
+  // Correct words list
+  const correctSection = document.getElementById('resultsCorrectSection');
+  const correctContainer = document.getElementById('resultsCorrectWords');
+  correctContainer.innerHTML = '';
+  document.getElementById('resultsCorrectTitle').textContent = 'Правильно — ' + correctWords.length;
+  correctSection.style.display = correctWords.length ? '' : 'none';
+  correctWords.forEach(w => {
+    const div = document.createElement('div');
+    div.className = 'results-word-item item-correct';
+    div.innerHTML = `<div class="results-item-row"><span class="results-item-en">${esc(w.en)}</span><span class="results-item-sep">—</span><span class="results-item-ru">${esc(w.ru)}</span></div>`;
+    correctContainer.appendChild(div);
+  });
+
+  gameBarEl.style.width = '100%';
+}
+
+gameSubmitEl.addEventListener('click', submitGameAnswer);
+gameInputEl.addEventListener('keydown', e => { if (e.key === 'Enter') submitGameAnswer(); });
+document.getElementById('btnNewRound').addEventListener('click', startRound);
+
+// ── TAB SWITCHING ─────────────────────────────────────────────
+const tabDictBtn     = document.getElementById('tabDict');
+const tabGameBtn     = document.getElementById('tabGame');
+const tabRulesBtn    = document.getElementById('tabRules');
+const controlsWrapEl = document.querySelector('.controls-wrap');
+const rulesViewEl    = document.getElementById('rulesView');
+
+function switchTab(tab) {
+  // сбрасываем все активные состояния
+  tabDictBtn.classList.remove('tab-active');
+  tabGameBtn.classList.remove('tab-active');
+  tabRulesBtn.classList.remove('tab-active');
+
+  if (tab === 'game') {
+    tabGameBtn.classList.add('tab-active');
+    controlsWrapEl.style.display = 'none';
+    mainContent.style.display    = 'none';
+    gameViewEl.style.display     = 'block';
+    rulesViewEl.style.display    = 'none';
+    startRound();
+  } else if (tab === 'rules') {
+    tabRulesBtn.classList.add('tab-active');
+    controlsWrapEl.style.display = 'none';
+    mainContent.style.display    = 'none';
+    gameViewEl.style.display     = 'none';
+    rulesViewEl.style.display    = 'block';
+  } else {
+    tabDictBtn.classList.add('tab-active');
+    controlsWrapEl.style.display = '';
+    mainContent.style.display    = '';
+    gameViewEl.style.display     = 'none';
+    rulesViewEl.style.display    = 'none';
+  }
+}
+
+tabDictBtn.addEventListener('click',  () => switchTab('dict'));
+tabGameBtn.addEventListener('click',  () => switchTab('game'));
+tabRulesBtn.addEventListener('click', () => switchTab('rules'));
+</script>
+</body>
+</html>
